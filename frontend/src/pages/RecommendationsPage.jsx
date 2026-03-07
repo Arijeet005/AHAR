@@ -41,7 +41,11 @@ function RecommendationsPage() {
       const res = await api.post('/recommend-dishes', payload);
       setResult(res.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Recommendation request failed');
+      if (err.response?.status === 500) {
+        setError('Recommendation service is unavailable on deployed backend. Redeploy backend with fallback support or set ML_RECOMMENDER_URL.');
+      } else {
+        setError(err.response?.data?.message || 'Recommendation request failed');
+      }
     }
   };
 
@@ -106,4 +110,3 @@ function RecommendationsPage() {
 }
 
 export default RecommendationsPage;
-

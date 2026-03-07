@@ -148,42 +148,63 @@ const recommendDishes = async (req, res, next) => {
     } = req.body;
 
     const recommenderUrl = process.env.ML_RECOMMENDER_URL || 'http://localhost:5001/recommend';
-
-    const { data } = await axios.post(
-      recommenderUrl,
-      {
-        topK,
-        cuisine,
-        menuType,
-        maxPrepTimeMin,
-        excludeMissingIngredients
-      },
-      { timeout: Number(process.env.ML_TIMEOUT_MS) || 5000 }
-    );
-
-    const recs = Array.isArray(data?.recommendations) ? data.recommendations : [];
     const menuDishes = await Dish.find(kitchenId ? { kitchenId } : {}).select('name ingredients quantityPerPerson').lean();
 
-    const menuByLowerName = new Map(menuDishes.map((d) => [String(d.name || '').toLowerCase(), d]));
+    try {
+      const { data } = await axios.post(
+        recommenderUrl,
+        {
+          topK,
+          cuisine,
+          menuType,
+          maxPrepTimeMin,
+          excludeMissingIngredients
+        },
+        { timeout: Number(process.env.ML_TIMEOUT_MS) || 5000 }
+      );
 
-    const enriched = recs.map((r) => {
-      const match = menuByLowerName.get(String(r.dishName || '').toLowerCase());
-      return {
-        ...r,
-        existsInMenu: Boolean(match),
-        menuDish: match || null
-      };
-    });
+      const recs = Array.isArray(data?.recommendations) ? data.recommendations : [];
+      const menuByLowerName = new Map(menuDishes.map((d) => [String(d.name || '').toLowerCase(), d]));
 
-    return res.status(200).json({
-      success: true,
-      ...data,
-      recommendations: enriched,
-      ml: {
-        provider: 'ml-service',
-        url: recommenderUrl
-      }
-    });
+      const enriched = recs.map((r) => {
+        const match = menuByLowerName.get(String(r.dishName || '').toLowerCase());
+        return {
+          ...r,
+          existsInMenu: Boolean(match),
+          menuDish: match || null
+        };
+      });
+
+      return res.status(200).json({
+        success: true,
+        ...data,
+        recommendations: enriched,
+        ml: {
+          provider: 'ml-service',
+          url: recommenderUrl
+        }
+      });
+    } catch (mlError) {
+      const fallback = menuDishes
+        .slice(0, Number(topK) || 5)
+        .map((dish, idx) => ({
+          dishName: dish.name,
+          score: Number((1 - idx * 0.05).toFixed(3)),
+          existsInMenu: true,
+          menuDish: dish,
+          missingIngredients: []
+        }));
+
+      return res.status(200).json({
+        success: true,
+        recommendations: fallback,
+        ml: {
+          provider: 'fallback',
+          reason: mlError.message,
+          url: recommenderUrl
+        }
+      });
+    }
   } catch (error) {
     return next(error);
   }
