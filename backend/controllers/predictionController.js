@@ -7,6 +7,8 @@ const calculateBaseDemand = (pastConsumption, expectedPeople) => {
   return (avgPast * 0.7) + (expectedPeople * 0.3);
 };
 
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
 const predictWaste = async (req, res, next) => {
   try {
     const {
@@ -21,7 +23,7 @@ const predictWaste = async (req, res, next) => {
       facilityType
     } = req.body;
 
-    const modelUrl = process.env.ML_DEMAND_URL || 'http://localhost:5001/predict';
+    const modelUrl = process.env.ML_WASTE_URL || process.env.ML_DEMAND_URL || 'http://localhost:5001/predict';
 
     const features = {
       occupancy_rate: Number(occupancyRate),
@@ -35,30 +37,48 @@ const predictWaste = async (req, res, next) => {
       kitchen_id: String(kitchenId)
     };
 
-    const { data } = await axios.post(
-      modelUrl,
-      { features },
-      { timeout: Number(process.env.ML_TIMEOUT_MS) || 5000 }
-    );
+    try {
+      const { data } = await axios.post(
+        modelUrl,
+        { features },
+        { timeout: Number(process.env.ML_TIMEOUT_MS) || 5000 }
+      );
 
-    const prediction = data?.prediction;
-    if (prediction === undefined || prediction === null || Number.isNaN(Number(prediction))) {
-      return res.status(502).json({
-        success: false,
-        message: 'ML service returned an invalid prediction',
-        ml: data
+      const prediction = data?.prediction;
+      if (prediction === undefined || prediction === null || Number.isNaN(Number(prediction))) {
+        return res.status(502).json({
+          success: false,
+          message: 'ML service returned an invalid prediction',
+          ml: data
+        });
+      }
+
+      return res.status(200).json({
+        predictedWaste: Number(prediction),
+        unit: 'unknown',
+        ml: {
+          provider: 'ml-service',
+          url: modelUrl,
+          inputColumns: data?.input_columns || []
+        }
+      });
+    } catch (mlError) {
+      const mealsPreparedNum = Number(mealsPrepared);
+      const occupancyNum = clamp(Number(occupancyRate), 0, 1);
+      const baselineMeals = Number(prev7DayAvgMeals) || Number(prevDayMeals) || mealsPreparedNum;
+      const expectedMeals = baselineMeals * occupancyNum;
+      const estimatedWaste = Math.max(0, mealsPreparedNum - expectedMeals);
+
+      return res.status(200).json({
+        predictedWaste: Number(estimatedWaste.toFixed(2)),
+        unit: 'meals',
+        ml: {
+          provider: 'fallback',
+          reason: mlError.message,
+          url: modelUrl
+        }
       });
     }
-
-    return res.status(200).json({
-      predictedWaste: Number(prediction),
-      unit: 'unknown',
-      ml: {
-        provider: 'ml-service',
-        url: modelUrl,
-        inputColumns: data?.input_columns || []
-      }
-    });
   } catch (error) {
     return next(error);
   }
