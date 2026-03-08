@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import Alert from '../components/ui/Alert';
 import Button from '../components/ui/Button';
@@ -7,6 +7,8 @@ import Field from '../components/ui/Field';
 import PageHeader from '../components/ui/PageHeader';
 import StatChip from '../components/ui/StatChip';
 import Badge from '../components/ui/Badge';
+
+const STORAGE_KEY = 'prediction_history'; // kept for backward compat clear
 
 function PredictionPage() {
     const [form, setForm] = useState({
@@ -19,6 +21,12 @@ function PredictionPage() {
     });
     const [result, setResult] = useState(null);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    // On first mount: clear any stale localStorage (data now lives in DB)
+    useEffect(() => {
+        try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    }, []);
 
     const onChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -28,6 +36,7 @@ function PredictionPage() {
         e.preventDefault();
         setError('');
         setResult(null);
+        setLoading(true);
 
         try {
             const payload = {
@@ -40,11 +49,23 @@ function PredictionPage() {
             };
 
             const res = await api.post('/predict-demand', payload);
-            setResult(res.data);
+            const prediction = res.data;
+            setResult(prediction);
+            // Prediction is now auto-saved to MongoDB by the backend
         } catch (err) {
             setError(err.response?.data?.message || 'Prediction failed');
+        } finally {
+            setLoading(false);
         }
     };
+
+    const wasteEstimate = result
+        ? Math.max(0, Number(result.predictedQuantity) - Number(form.expectedPeople))
+        : null;
+
+    const efficiencyPct = result && Number(result.predictedQuantity) > 0
+        ? Number(((Number(form.expectedPeople) / Number(result.predictedQuantity)) * 100).toFixed(1))
+        : null;
 
     return (
         <div className="stack">
@@ -75,7 +96,9 @@ function PredictionPage() {
                         <input id="weather" name="weather" value={form.weather} onChange={onChange} placeholder="e.g., Rainy, Sunny, Cloudy" />
                     </Field>
                     <div className="form-action">
-                        <Button id="predict-submit" type="submit">Predict Demand</Button>
+                        <Button id="predict-submit" type="submit" disabled={loading}>
+                            {loading ? 'Predicting...' : 'Predict Demand'}
+                        </Button>
                     </div>
                 </form>
             </Card>
@@ -85,7 +108,30 @@ function PredictionPage() {
             {result && (
                 <Card title="Prediction Results">
                     <div className="stats-grid">
-                        <StatChip label="Predicted Quantity" value={result.predictedQuantity} />
+                        <StatChip
+                            label="Predicted Quantity"
+                            value={<Badge tone="success">{result.predictedQuantity} plates</Badge>}
+                        />
+                        <StatChip
+                            label="Expected People"
+                            value={`${form.expectedPeople} people`}
+                        />
+                        <StatChip
+                            label="Estimated Waste / Surplus"
+                            value={
+                                <Badge tone={wasteEstimate > 0 ? 'warning' : 'success'}>
+                                    {wasteEstimate > 0 ? `+${wasteEstimate} surplus plates` : '✓ No surplus'}
+                                </Badge>
+                            }
+                        />
+                        <StatChip
+                            label="Consumption Efficiency"
+                            value={
+                                efficiencyPct !== null
+                                    ? <Badge tone={efficiencyPct >= 90 ? 'success' : efficiencyPct >= 75 ? 'warning' : 'error'}>{efficiencyPct}%</Badge>
+                                    : '—'
+                            }
+                        />
                         <StatChip
                             label="Surplus Risk"
                             value={result.surplusRisk ? <Badge tone="warning">High Risk</Badge> : <Badge tone="success">Controlled</Badge>}
@@ -95,13 +141,24 @@ function PredictionPage() {
                             value={result.donationRecommended ? <Badge tone="success">Yes</Badge> : <Badge tone="neutral">No</Badge>}
                         />
                     </div>
+
                     {result.adjustmentFactors && (
-                        <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
-                            <strong>Adjustment Factors:</strong>
-                            <div>Event Multiplier: {result.adjustmentFactors.eventMultiplier?.toFixed(2) || 1}</div>
-                            <div>Weather Multiplier: {result.adjustmentFactors.weatherMultiplier?.toFixed(2) || 1}</div>
+                        <div style={{ marginTop: '1rem', padding: '0.85rem 1rem', background: 'var(--surface-muted)', borderRadius: '10px', fontSize: '0.9rem', lineHeight: 1.7 }}>
+                            <strong>Adjustment Factors applied:</strong>
+                            <div>Event multiplier: <Badge tone="neutral">{result.adjustmentFactors.eventMultiplier?.toFixed(2) || '1.00'}×</Badge></div>
+                            <div>Weather multiplier: <Badge tone="neutral">{result.adjustmentFactors.weatherMultiplier?.toFixed(2) || '1.00'}×</Badge></div>
                         </div>
                     )}
+
+                    {wasteEstimate > 0 && (
+                        <Alert tone="warning">
+                            ⚠️ {wasteEstimate} surplus plates predicted. Consider donating to nearby NGOs or reducing prep.
+                        </Alert>
+                    )}
+
+                    <p style={{ marginTop: '0.75rem', fontSize: '0.82rem', color: 'var(--text-subtle)' }}>
+                        ✅ Saved to Dashboard. Navigate to <strong>Dashboard</strong> to see your cumulative analytics.
+                    </p>
                 </Card>
             )}
         </div>

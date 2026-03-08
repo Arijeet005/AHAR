@@ -5,7 +5,9 @@ const {
   predictDemand,
   recommendDishes,
   createEventAdjustment,
-  getEventAdjustments
+  getEventAdjustments,
+  getPredictionHistory,
+  deletePredictionHistory
 } = require('../controllers/predictionController');
 const validateRequest = require('../middleware/validateRequest');
 
@@ -75,6 +77,20 @@ router.get(
   [query('kitchenId').optional().isString()],
   validateRequest,
   getEventAdjustments
+);
+
+router.get(
+  '/prediction-history',
+  [query('kitchenId').optional().isString(), query('limit').optional().isInt({ min: 1, max: 500 })],
+  validateRequest,
+  getPredictionHistory
+);
+
+router.delete(
+  '/prediction-history',
+  [query('kitchenId').optional().isString()],
+  validateRequest,
+  deletePredictionHistory
 );
 
 module.exports = router;

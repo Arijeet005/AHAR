@@ -1,6 +1,7 @@
 const EventAdjustment = require('../models/EventAdjustment');
 const Dish = require('../models/Dish');
 const axios = require('axios');
+const PredictionLog = require('../models/PredictionLog');
 
 const calculateBaseDemand = (pastConsumption, expectedPeople) => {
   const avgPast = pastConsumption.reduce((sum, v) => sum + v, 0) / pastConsumption.length;
@@ -113,6 +114,28 @@ const predictDemand = async (req, res, next) => {
     );
 
     const surplusRisk = predictedQuantity > expectedPeople * 1.15;
+    const donationRecommended = surplusRisk;
+    const estimatedWaste = Math.max(0, predictedQuantity - expectedPeople);
+
+    // ── Persist to MongoDB so Dashboard can load history after restart ──
+    try {
+      await PredictionLog.create({
+        kitchenId,
+        expectedPeople,
+        predictedQuantity,
+        estimatedWaste,
+        surplusRisk,
+        donationRecommended,
+        eventMultiplier,
+        weatherMultiplier,
+        dayOfWeek,
+        weather: weather || '',
+        events: Array.isArray(events) ? events.join(', ') : (events || '')
+      });
+    } catch (dbErr) {
+      // Non-fatal: log but do not break the prediction response
+      console.error('[PredictionLog] Could not save to DB:', dbErr.message);
+    }
 
     const mockMlPayload = {
       source: 'mock',
@@ -123,7 +146,7 @@ const predictDemand = async (req, res, next) => {
     return res.status(200).json({
       predictedQuantity,
       surplusRisk,
-      donationRecommended: surplusRisk,
+      donationRecommended,
       adjustmentFactors: {
         eventMultiplier,
         weatherMultiplier,
@@ -230,10 +253,54 @@ const getEventAdjustments = async (req, res, next) => {
   }
 };
 
+const getPredictionHistory = async (req, res, next) => {
+  try {
+    const { kitchenId, limit = 100 } = req.query;
+    const filter = kitchenId ? { kitchenId } : {};
+    const logs = await PredictionLog.find(filter)
+      .sort({ createdAt: -1 })
+      .limit(Number(limit))
+      .lean();
+
+    // Map to the same shape the frontend localStorage used
+    const history = logs.map((l) => ({
+      id: String(l._id),
+      date: l.createdAt.toISOString(),
+      kitchenId: l.kitchenId,
+      expectedPeople: l.expectedPeople,
+      predictedQuantity: l.predictedQuantity,
+      estimatedWaste: l.estimatedWaste,
+      surplusRisk: l.surplusRisk,
+      donationRecommended: l.donationRecommended,
+      eventMultiplier: l.eventMultiplier,
+      weatherMultiplier: l.weatherMultiplier,
+      dayOfWeek: l.dayOfWeek,
+      weather: l.weather
+    }));
+
+    return res.status(200).json({ success: true, data: history });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const deletePredictionHistory = async (req, res, next) => {
+  try {
+    const { kitchenId } = req.query;
+    const filter = kitchenId ? { kitchenId } : {};
+    await PredictionLog.deleteMany(filter);
+    return res.status(200).json({ success: true, message: 'History cleared' });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   predictWaste,
   predictDemand,
   recommendDishes,
   createEventAdjustment,
-  getEventAdjustments
+  getEventAdjustments,
+  getPredictionHistory,
+  deletePredictionHistory
 };

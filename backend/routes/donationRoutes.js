@@ -34,7 +34,7 @@ router.get(
   [
     query('lat').isFloat({ min: -90, max: 90 }),
     query('lng').isFloat({ min: -180, max: 180 }),
-    query('radiusKm').optional().isFloat({ min: 0.1, max: 100 }),
+    query('radiusKm').optional().isFloat({ min: 0.1 }),
     query('kitchenId').optional().isString()
   ],
   validateRequest,

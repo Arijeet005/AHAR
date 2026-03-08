@@ -29,52 +29,46 @@ const getNearbyNgos = async (req, res, next) => {
       kitchenId
     } = req.query;
 
-    const distanceMeters = Number(radiusKm) * 1000;
-    const nearQuery = {
-      location: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [Number(lng), Number(lat)]
-          },
-          $maxDistance: distanceMeters
-        }
-      }
-    };
+    const pipeline = [];
 
+    const matchStage = {};
     if (kitchenId) {
-      nearQuery.kitchenId = kitchenId;
+      matchStage.kitchenId = kitchenId;
     }
 
-    const ngos = await Ngo.find(nearQuery).limit(50);
+    pipeline.push({
+      $geoNear: {
+        near: { type: 'Point', coordinates: [Number(lng), Number(lat)] },
+        distanceField: 'distanceKm',
+        distanceMultiplier: 1 / 1000,
+        spherical: true,
+        query: matchStage
+      }
+    });
 
-    const withDistance = ngos.map((ngo) => {
-      const [ngoLng, ngoLat] = ngo.location.coordinates;
-      const toRadians = (value) => (value * Math.PI) / 180;
-      const earthKm = 6371;
-      const dLat = toRadians(ngoLat - Number(lat));
-      const dLng = toRadians(ngoLng - Number(lng));
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(Number(lat))) *
-          Math.cos(toRadians(ngoLat)) *
-          Math.sin(dLng / 2) *
-          Math.sin(dLng / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distanceKm = Number((earthKm * c).toFixed(2));
+    pipeline.push({ $limit: 100 });
 
+    const ngos = await Ngo.aggregate(pipeline);
+
+    const formatted = ngos.map((ngo) => {
+      // Keep the same field structure as the original Ngo schema by spreading
       return {
-        ...ngo.toObject(),
-        distanceKm
+        ...ngo,
+        distanceKm: Number(ngo.distanceKm.toFixed(2))
       };
     });
+
+    const withinRadius = formatted.filter(
+      (ngo) => ngo.distanceKm <= Number(radiusKm)
+    );
 
     return res.status(200).json({
       success: true,
       data: {
         source: { lat: Number(lat), lng: Number(lng), radiusKm: Number(radiusKm) },
-        count: withDistance.length,
-        ngos: withDistance
+        count: withinRadius.length,
+        ngos: withinRadius,
+        allSorted: formatted
       }
     });
   } catch (error) {
