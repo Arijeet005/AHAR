@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Button from './ui/Button';
 import { useLanguage } from '../i18n';
+import { UserButton } from '@clerk/clerk-react';
 
 const navItems = [
   { path: '/', label: 'Dashboard' },
   { path: '/prediction', label: 'Prediction' },
   { path: '/inventory', label: 'Inventory Hub' },
   { path: '/donations', label: 'Donation Locator' },
+  { path: '/payment', label: 'Payment' },
   { path: '/guide', label: 'Guide' }
 ];
 
@@ -24,9 +26,12 @@ function Layout({ children }) {
   return (
     <div className="app-shell">
       <header className="top-ribbon" aria-label="Primary">
-        <div className="ribbon-brand">
-          <h1>{t('AHAR')}</h1>
-          <p>{t('Ai based hospitality and resource optimizer')}</p>
+        <div className="ribbon-brand" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <img src="/logo.png" alt="App Logo" style={{ height: 48, width: 48, borderRadius: '50%' }} />
+          <div>
+            <h1>{t('AHAR')}</h1>
+            <p>{t('Ai based hospitality and resource optimizer')}</p>
+          </div>
         </div>
         <nav className="nav-links nav-ribbon">
           {navItems.map((item) => (
@@ -57,6 +62,7 @@ function Layout({ children }) {
           >
             {theme === 'eco-dark' ? t('Light Theme') : t('Dark Theme')}
           </Button>
+          <UserButton />
         </nav>
       </header>
       <div className="layout-main">
