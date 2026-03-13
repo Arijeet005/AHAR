@@ -17,9 +17,10 @@ export default function Navbar({ scrollYProgress }: NavbarProps) {
   }, [scrollYProgress]);
 
   const navLinks = [
-    { label: 'Features', href: '#features' },
-    { label: 'NGO Network', href: '#ngo' },
     { label: 'Dashboard', href: '#dashboard' },
+    { label: 'Prediction', href: '#prediction' },
+    { label: 'Inventory', href: '#inventory' },
+    { label: 'Pricing', href: '#pricing' },
   ];
 
   return (
@@ -74,7 +75,7 @@ export default function Navbar({ scrollYProgress }: NavbarProps) {
 
           {/* CTA */}
           <Link
-            href="#donation"
+            href="#donations"
             id="nav-donate-cta"
             className="relative overflow-hidden font-heading font-semibold text-xs tracking-widest px-5 py-2.5 rounded-sm text-white transition-all duration-300 hover:scale-105 active:scale-95"
             style={{

@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+AHAR frontend (Next.js App Router).
+
+## Routes
+
+- `/dashboard`: Analytics dashboard (tabs: Key Analytics, Time Range Analytics, Reports)
+- `/prediction`: AI demand prediction form + result card
+- `/inventory`: Inventory Hub (tabs: All, Expiry Soon, Add Item, Expired)
+- `/donations`: Donation Locator (tabs: Nearest NGOs, History, Map)
+- `/payment`: Billing/Invoices/Payment Methods
+- `/guide`: Getting Started, Features, Talk to Us, Free Demo
+- `/pricing`: Pricing plans
+- `/login`, `/register`: Placeholder auth screens
 
 ## Getting Started
 
@@ -29,7 +40,16 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Environment Variables
+
+- `NEXT_PUBLIC_API_URL`: Backend base URL (example local: `http://localhost:5000`). On Vercel, set this to your deployed backend URL (Render, etc.).
+
 ## Deploy on Vercel
+
+If deploying from the monorepo, set Vercel Project Settings:
+
+- Git repo: `Arijeet005/AHAR`
+- Root Directory: `frontend`
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 

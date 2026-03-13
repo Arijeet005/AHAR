@@ -11,10 +11,17 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #a0a0a0;
 
-  --font-heading: var(--font-orbitron), "Orbitron", monospace;
-  --font-body: var(--font-rajdhani), "Rajdhani", sans-serif;
+  /* Avoid build-time network fetches (e.g. next/font/google); keep a strong default stack. */
+  --font-heading: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
 
   --radius-hud: 2px;
+
+  /* Theme-aware glass tokens (used by .glass utilities). */
+  --glass-bg: rgba(11, 11, 11, 0.60);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-strong-bg: rgba(11, 11, 11, 0.85);
+  --glass-strong-border: rgba(255, 255, 255, 0.08);
 
   --animate-flicker: flicker 3s infinite;
   --animate-scan: scan 4s linear infinite;
@@ -33,8 +40,8 @@
   }
 
   body {
-    background-color: #0b0b0b;
-    color: #ffffff;
+    background-color: var(--color-base-dark);
+    color: var(--color-text-primary);
     font-family: var(--font-body);
     line-height: 1.6;
   }
@@ -50,14 +57,14 @@
     width: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #0b0b0b;
+    background: var(--color-base-dark);
   }
   ::-webkit-scrollbar-thumb {
-    background: #2a2a2a;
+    background: var(--color-neutral-carbon);
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #E23744;
+    background: var(--color-accent-red);
   }
 
   /* Leaflet overrides */
@@ -85,6 +92,28 @@
   }
 }
 
+/* Theme overrides (Tailwind v4 tokens read these CSS variables). */
+:root[data-theme='light'] {
+  --color-base-dark: #f6f6f7;
+  --color-neutral-dim: #ffffff;
+  --color-neutral-carbon: #d8d8dc;
+  --color-neutral-muted: #6a6a6a;
+
+  --color-text-primary: #121212;
+  --color-text-secondary: #2d2d2d;
+
+  /* Brand palette (Zomato + Swiggy). */
+  --color-accent-red: #CB202D;
+  --color-accent-orange: #D4902A;
+  --color-accent-turquoise: #2FBDB2;
+
+  /* Light glass needs to be readable on light surfaces. */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-strong-bg: rgba(255, 255, 255, 0.88);
+  --glass-strong-border: rgba(0, 0, 0, 0.10);
+}
+
 @layer utilities {
   .font-heading {
     font-family: var(--font-heading);
@@ -95,17 +124,17 @@
 
   /* Glassmorphism */
   .glass {
-    background: rgba(11, 11, 11, 0.6);
+    background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--glass-border);
   }
 
   .glass-strong {
-    background: rgba(11, 11, 11, 0.85);
+    background: var(--glass-strong-bg);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-strong-border);
   }
 
   /* HUD corner decorations */

@@ -1,20 +1,6 @@
 import type { Metadata } from 'next';
-import { Orbitron, Rajdhani } from 'next/font/google';
 import './globals.css';
-
-const orbitron = Orbitron({
-  subsets: ['latin'],
-  variable: '--font-orbitron',
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-});
-
-const rajdhani = Rajdhani({
-  subsets: ['latin'],
-  variable: '--font-rajdhani',
-  display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
-});
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'AHAR — AI-based Food Waste Prediction & Management',
@@ -30,8 +16,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${orbitron.variable} ${rajdhani.variable}`}>
-      <body className="antialiased bg-base-dark text-white overflow-x-hidden">{children}</body>
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <body className="antialiased bg-base-dark text-text-primary overflow-x-hidden">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
