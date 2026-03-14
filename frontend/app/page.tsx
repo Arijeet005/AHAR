@@ -11,11 +11,10 @@ import Footer from '@/components/Footer';
 import DashboardView from '@/components/dashboard/DashboardView';
 import PredictionView from '@/components/prediction/PredictionView';
 
-import InventoryPage from './(saas)/inventory/page';
-import DonationsPage from './(saas)/donations/page';
-import PaymentPage from './(saas)/payment/page';
-import GuidePage from './(saas)/guide/page';
-import PricingPage from './(saas)/pricing/page';
+	import InventoryPage from './(saas)/inventory/page';
+	import DonationsPage from './(saas)/donations/page';
+	import GuidePage from './(saas)/guide/page';
+	import PricingPage from './(saas)/pricing/page';
 
 export default function HomePage() {
   // Entry root: /#dashboard (set without auto-scrolling so the scroll intro still plays first)
@@ -37,7 +36,7 @@ export default function HomePage() {
     <AppShell>
       {/* AppShell adds padding; pull the landing full-bleed. */}
       <div className="-mx-5 md:-mx-8 -mt-6">
-        <main className="bg-base-dark min-h-screen" id="main-content">
+        <main className="min-h-screen" id="main-content">
           <a
             href="#below-fold"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-accent-turquoise focus:text-base-dark focus:font-heading focus:text-xs focus:rounded-sm"
@@ -59,7 +58,7 @@ export default function HomePage() {
           </section>
 
           {/* Continuation: feature sections */}
-          <div id="below-fold" className="relative z-20 bg-base-dark" tabIndex={-1}>
+          <div id="below-fold" className="relative z-20" tabIndex={-1}>
             <div
               className="w-full h-px"
               style={{ background: 'linear-gradient(90deg, transparent, rgba(48,213,200,0.3), transparent)' }}
@@ -71,17 +70,18 @@ export default function HomePage() {
                   <p className="font-body text-accent-turquoise text-xs tracking-widest uppercase" style={{ letterSpacing: '0.2em' }}>
                     CONTINUE
                   </p>
-                  <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Dashboard</h2>
+                  <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Dashboard</h2>
                 </div>
-                <Link
-                  href="/dashboard"
-                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-accent-red), var(--color-accent-orange))',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  OPEN FULL
+	                <Link
+	                  href="/dashboard"
+	                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                  style={{
+	                    background: 'var(--color-accent-red)',
+	                    color: '#fff',
+	                    letterSpacing: '0.14em',
+	                  }}
+	                >
+	                  OPEN FULL
                 </Link>
               </div>
               <DashboardView />
@@ -93,16 +93,17 @@ export default function HomePage() {
 
             <section id="prediction" className="max-w-7xl mx-auto px-6 py-16" aria-label="Prediction">
               <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Prediction</h2>
-                <Link
-                  href="/prediction"
-                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-accent-orange), var(--color-accent-turquoise))',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  OPEN FULL
+                <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Prediction</h2>
+	                <Link
+	                  href="/prediction"
+	                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                  style={{
+	                    background: 'var(--color-accent-orange)',
+	                    color: '#fff',
+	                    letterSpacing: '0.14em',
+	                  }}
+	                >
+	                  OPEN FULL
                 </Link>
               </div>
               <PredictionView />
@@ -114,16 +115,17 @@ export default function HomePage() {
 
             <section id="inventory" className="max-w-7xl mx-auto px-6 py-16" aria-label="Inventory Hub">
               <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Inventory Hub</h2>
-                <Link
-                  href="/inventory"
-                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-accent-turquoise), var(--color-accent-orange))',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  OPEN FULL
+                <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Inventory Hub</h2>
+	                <Link
+	                  href="/inventory"
+	                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                  style={{
+	                    background: 'var(--color-accent-turquoise)',
+	                    color: '#fff',
+	                    letterSpacing: '0.14em',
+	                  }}
+	                >
+	                  OPEN FULL
                 </Link>
               </div>
               <InventoryPage />
@@ -135,42 +137,25 @@ export default function HomePage() {
 
             <section id="donations" className="max-w-7xl mx-auto px-6 py-16" aria-label="Donation Locator">
               <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Donation Locator</h2>
-                <Link
-                  href="/donations"
-                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-accent-red), var(--color-accent-turquoise))',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  OPEN FULL
+                <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Donation Locator</h2>
+	                <Link
+	                  href="/donations"
+	                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                  style={{
+	                    background: 'var(--color-accent-red)',
+	                    color: '#fff',
+	                    letterSpacing: '0.14em',
+	                  }}
+	                >
+	                  OPEN FULL
                 </Link>
               </div>
               <DonationsPage />
             </section>
 
-            <section id="payment" className="max-w-7xl mx-auto px-6 py-16" aria-label="Payment">
-              <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Payment</h2>
-                <Link
-                  href="/payment"
-                  className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                  style={{
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.14)',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  OPEN FULL
-                </Link>
-              </div>
-              <PaymentPage />
-            </section>
-
-            <section id="guide" className="max-w-7xl mx-auto px-6 py-16" aria-label="Guide">
-              <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Guide</h2>
+	            <section id="guide" className="max-w-7xl mx-auto px-6 py-16" aria-label="Guide">
+	              <div className="flex items-center justify-between gap-3 mb-6">
+	                <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Guide</h2>
                 <Link
                   href="/guide"
                   className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
@@ -188,7 +173,7 @@ export default function HomePage() {
 
             <section id="pricing" className="max-w-7xl mx-auto px-6 py-16" aria-label="Pricing">
               <div className="flex items-center justify-between gap-3 mb-6">
-                <h2 className="font-heading font-black text-white text-3xl md:text-4xl">Pricing</h2>
+                <h2 className="font-heading font-black text-text-primary text-3xl md:text-4xl">Pricing</h2>
                 <Link
                   href="/pricing"
                   className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
@@ -209,10 +194,10 @@ export default function HomePage() {
 
           <section className="sr-only" aria-label="Page summary">
             <h1>AHAR — AI-based Food Waste Prediction and Management System</h1>
-            <p>
-              AHAR is a platform that uses artificial intelligence to predict food surplus before it becomes waste.
-              Use the scrollytelling intro and then continue into the dashboard, prediction, inventory, donations, payment, guide, and pricing sections.
-            </p>
+	            <p>
+	              AHAR is a platform that uses artificial intelligence to predict food surplus before it becomes waste.
+	              Use the scrollytelling intro and then continue into the dashboard, prediction, inventory, donations, guide, and pricing sections.
+	            </p>
           </section>
         </main>
       </div>

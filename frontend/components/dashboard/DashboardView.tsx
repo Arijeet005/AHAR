@@ -223,30 +223,30 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
           <Card className="p-5 border border-white/10">
             <CardTitle>Download Weekly Report (PDF)</CardTitle>
             <p className="font-body text-sm text-text-secondary mt-2">Executive summary of waste and efficiency.</p>
-            <button
-              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-accent-orange), var(--color-accent-red))',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.14em',
-              }}
-            >
-              DOWNLOAD
+	            <button
+	              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	              style={{
+	                background: 'var(--color-accent-orange)',
+	                color: '#fff',
+	                letterSpacing: '0.14em',
+	              }}
+	            >
+	              DOWNLOAD
             </button>
           </Card>
 
           <Card className="p-5 border border-white/10">
             <CardTitle>Download Monthly Report (PDF)</CardTitle>
             <p className="font-body text-sm text-text-secondary mt-2">Trends, anomalies, and actions.</p>
-            <button
-              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-accent-turquoise), var(--color-accent-orange))',
-                color: 'var(--color-text-primary)',
-                letterSpacing: '0.14em',
-              }}
-            >
-              DOWNLOAD
+	            <button
+	              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	              style={{
+	                background: 'var(--color-accent-turquoise)',
+	                color: '#fff',
+	                letterSpacing: '0.14em',
+	              }}
+	            >
+	              DOWNLOAD
             </button>
           </Card>
 
@@ -279,15 +279,15 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 type="date"
                 aria-label="End date"
               />
-              <button
-                className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
-                style={{
-                  background: 'linear-gradient(135deg, var(--color-accent-red), var(--color-accent-orange))',
-                  color: 'var(--color-text-primary)',
-                  letterSpacing: '0.14em',
-                }}
-              >
-                GENERATE
+	              <button
+	                className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                style={{
+	                  background: 'var(--color-accent-red)',
+	                  color: '#fff',
+	                  letterSpacing: '0.14em',
+	                }}
+	              >
+	                GENERATE
               </button>
             </div>
           </Card>

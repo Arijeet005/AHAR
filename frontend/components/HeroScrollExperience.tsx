@@ -3,6 +3,7 @@
 import { useTransform, MotionValue, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { HUD_PHASES, SOLUTION_CARDS, BACKEND_BASE } from '@/data/aharData';
+import { useTheme } from '@/lib/theme';
 
 interface HeroScrollExperienceProps {
   scrollYProgress: MotionValue<number>;
@@ -48,6 +49,7 @@ function HUDCornerDecor({ color }: { color: string }) {
 }
 
 export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExperienceProps) {
+  const { theme } = useTheme();
   const [dashData, setDashData] = useState<DashboardData>({});
 
   // Fetch dashboard data once
@@ -260,9 +262,18 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
           className="font-heading font-black text-center mb-4"
           style={{
             fontSize: 'clamp(2.5rem, 7vw, 6rem)',
-            background: 'linear-gradient(135deg, #30D5C8, #ffffff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            ...(theme === 'light'
+              ? {
+                  color: 'var(--text)',
+                  background: 'none',
+                  WebkitBackgroundClip: 'initial',
+                  WebkitTextFillColor: 'initial',
+                }
+              : {
+                  background: 'linear-gradient(135deg, #30D5C8, #ffffff)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }),
             lineHeight: 1.05,
           }}
         >

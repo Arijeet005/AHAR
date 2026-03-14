@@ -219,18 +219,18 @@ export default function WastePredictionDemo() {
               </div>
 
               {/* CTA */}
-              <button
-                id="predict-btn"
-                onClick={handlePredict}
-                disabled={loading}
-                className="w-full py-4 font-heading font-bold text-sm tracking-widest text-white rounded-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
-                style={{
-                  background: loading ? '#333' : 'linear-gradient(135deg, #FC8019, #E23744)',
-                  letterSpacing: '0.15em',
-                  boxShadow: loading ? 'none' : '0 0 30px rgba(252,128,25,0.3)',
-                }}
-                aria-label="Run AHAR waste prediction"
-              >
+	              <button
+	                id="predict-btn"
+	                onClick={handlePredict}
+	                disabled={loading}
+	                className="w-full py-4 font-heading font-bold text-sm tracking-widest text-white rounded-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+	                style={{
+	                  background: loading ? '#333' : 'var(--color-accent-orange)',
+	                  letterSpacing: '0.15em',
+	                  boxShadow: loading ? 'none' : '0 0 30px rgba(252,128,25,0.3)',
+	                }}
+	                aria-label="Run AHAR waste prediction"
+	              >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

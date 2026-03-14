@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Bananas">
+  <rect x="16" y="16" width="224" height="224" rx="28" fill="#FFF8F3"/>
+  <path d="M82 88c-8 56 30 124 92 122 8 0 14-6 14-14-56 6-92-66-88-110 0-10-10-18-18-18Z" fill="#FFB703"/>
+  <path d="M86 88c6 50 40 110 92 108" fill="none" stroke="#E76F51" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+  <path d="M94 76c12 6 20 12 24 20" fill="none" stroke="#2D6A4F" stroke-width="10" stroke-linecap="round"/>
+</svg>

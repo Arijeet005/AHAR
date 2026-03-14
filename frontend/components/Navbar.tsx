@@ -74,18 +74,18 @@ export default function Navbar({ scrollYProgress }: NavbarProps) {
           </ul>
 
           {/* CTA */}
-          <Link
-            href="#donations"
-            id="nav-donate-cta"
-            className="relative overflow-hidden font-heading font-semibold text-xs tracking-widest px-5 py-2.5 rounded-sm text-white transition-all duration-300 hover:scale-105 active:scale-95"
-            style={{
-              background: 'linear-gradient(135deg, #E23744, #FC8019)',
-              letterSpacing: '0.12em',
-              boxShadow: '0 0 20px rgba(226,55,68,0.25)',
-            }}
-            aria-label="Donate food using AHAR"
-          >
-            DONATE FOOD
+	        <Link
+	          href="#donations"
+	          id="nav-donate-cta"
+	          className="relative overflow-hidden font-heading font-semibold text-xs tracking-widest px-5 py-2.5 rounded-sm text-white transition-all duration-300 hover:scale-105 active:scale-95"
+	          style={{
+	            background: 'var(--color-accent-orange)',
+	            letterSpacing: '0.12em',
+	            boxShadow: '0 0 20px rgba(226,55,68,0.25)',
+	          }}
+	          aria-label="Donate food using AHAR"
+	        >
+	          DONATE FOOD
           </Link>
         </div>
       </div>

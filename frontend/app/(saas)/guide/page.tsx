@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion';
 
 type GuideTab = 'start' | 'features' | 'talk' | 'demo';
 
-export default function GuidePage() {
+function GuidePageContent() {
   const [tab, setTab] = useState<GuideTab>('start');
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
@@ -70,15 +70,15 @@ export default function GuidePage() {
             <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Subject" />
             <textarea className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary min-h-28 md:col-span-2" placeholder="Message" />
           </div>
-          <button
-            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
-            style={{
-              background: 'linear-gradient(135deg, var(--color-accent-red), var(--color-accent-orange))',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.14em',
-            }}
-          >
-            SUBMIT
+	          <button
+	            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-orange)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            SUBMIT
           </button>
         </Card>
       )}
@@ -97,18 +97,26 @@ export default function GuidePage() {
               <option>On-site demo</option>
             </select>
           </div>
-          <button
-            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
-            style={{
-              background: 'linear-gradient(135deg, var(--color-accent-turquoise), var(--color-accent-orange))',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.14em',
-            }}
-          >
-            REQUEST DEMO
+	          <button
+	            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-turquoise)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            REQUEST DEMO
           </button>
         </Card>
       )}
     </div>
+  );
+}
+
+export default function GuidePage() {
+  return (
+    <Suspense fallback={null}>
+      <GuidePageContent />
+    </Suspense>
   );
 }

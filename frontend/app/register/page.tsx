@@ -11,15 +11,15 @@ export default function RegisterPage() {
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Name" />
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Email" />
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Password" type="password" />
-          <button
-            className="mt-2 w-full py-3 rounded-sm font-heading text-xs tracking-widest"
-            style={{
-              background: 'linear-gradient(135deg, var(--color-accent-turquoise), var(--color-accent-orange))',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '0.14em',
-            }}
-          >
-            REGISTER
+	          <button
+	            className="mt-2 w-full py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-turquoise)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            REGISTER
           </button>
           <p className="font-body text-sm text-text-secondary">
             Already have an account?{' '}
@@ -32,4 +32,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

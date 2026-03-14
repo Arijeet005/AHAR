@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import DashboardView from '@/components/dashboard/DashboardView';
 
@@ -11,9 +11,17 @@ function coerceTab(v: string | null): DashTab | undefined {
   return undefined;
 }
 
-export default function DashboardPage() {
+function DashboardPageContent() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   const tabFromQuery = useMemo(() => coerceTab(tabParam), [tabParam]);
   return <DashboardView tabFromQuery={tabFromQuery} />;
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={null}>
+      <DashboardPageContent />
+    </Suspense>
+  );
 }

@@ -281,22 +281,22 @@ export default function NGOLocator() {
                           )}
                           <p className="font-body text-xs text-text-secondary mb-3">📞 {ngo.phone}</p>
 
-                          <button
-                            id={`donate-ngo-${ngo._id}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDonationRequest(ngo._id, ngo.name);
-                            }}
-                            disabled={isDonated}
-                            className="w-full py-2.5 font-heading font-bold text-xs tracking-widest text-white rounded-sm transition-all duration-300 disabled:cursor-not-allowed"
-                            style={{
-                              background: isDonated ? 'rgba(48,213,200,0.1)' : `linear-gradient(135deg, #30D5C8, #20A89E)`,
-                              border: `1px solid ${accentTurquoise}40`,
-                              color: isDonated ? accentTurquoise : '#0b0b0b',
-                              letterSpacing: '0.12em',
-                            }}
-                            aria-label={isDonated ? `Donation request sent to ${ngo.name}` : `Request pickup from ${ngo.name}`}
-                          >
+	                          <button
+	                            id={`donate-ngo-${ngo._id}`}
+	                            onClick={(e) => {
+	                              e.stopPropagation();
+	                              handleDonationRequest(ngo._id, ngo.name);
+	                            }}
+	                            disabled={isDonated}
+	                            className="w-full py-2.5 font-heading font-bold text-xs tracking-widest text-white rounded-sm transition-all duration-300 disabled:cursor-not-allowed"
+	                            style={{
+	                              background: isDonated ? 'rgba(48,213,200,0.1)' : accentTurquoise,
+	                              border: `1px solid ${accentTurquoise}40`,
+	                              color: isDonated ? accentTurquoise : '#0b0b0b',
+	                              letterSpacing: '0.12em',
+	                            }}
+	                            aria-label={isDonated ? `Donation request sent to ${ngo.name}` : `Request pickup from ${ngo.name}`}
+	                          >
                             {isDonated ? '✓ REQUEST SENT' : 'REQUEST PICKUP'}
                           </button>
                         </motion.div>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Eggs">
+  <rect x="16" y="16" width="224" height="224" rx="28" fill="#FFF8F3"/>
+  <ellipse cx="108" cy="146" rx="34" ry="46" fill="#ffffff" stroke="#F0E6DC" stroke-width="10"/>
+  <ellipse cx="152" cy="146" rx="34" ry="46" fill="#ffffff" stroke="#F0E6DC" stroke-width="10"/>
+  <path d="M110 118c8-10 16-14 26-14" fill="none" stroke="#FFB703" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+</svg>
