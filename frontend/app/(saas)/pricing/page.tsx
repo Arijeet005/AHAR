@@ -1,4 +1,7 @@
+'use client';
+
 import { Card, CardTitle } from '@/components/ui/Card';
+import { T } from '@/hooks/useTranslate';
 
 export default function PricingPage() {
   const plans = [
@@ -26,11 +29,11 @@ export default function PricingPage() {
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
       {plans.map((p) => (
         <Card key={p.name} className="p-6 border border-white/10">
-          <CardTitle>{p.name}</CardTitle>
+          <CardTitle><T>{p.name}</T></CardTitle>
           <p className="font-heading font-black text-3xl mt-3 text-text-primary">{p.price}</p>
           <ul className="mt-4 flex flex-col gap-2 font-body text-sm text-text-secondary" role="list">
             {p.features.map((f) => (
-              <li key={f}>• {f}</li>
+              <li key={f}>• <T>{f}</T></li>
             ))}
           </ul>
           <button
@@ -41,7 +44,7 @@ export default function PricingPage() {
               letterSpacing: '0.14em',
             }}
           >
-            CHOOSE PLAN
+            <T>CHOOSE PLAN</T>
           </button>
         </Card>
       ))}

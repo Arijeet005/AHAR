@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { T } from '@/hooks/useTranslate';
 
 export default function Footer() {
   const year = 2026;
@@ -34,16 +35,16 @@ export default function Footer() {
               <span className="font-heading font-bold text-lg text-white tracking-widest" style={{ letterSpacing: '0.25em' }}>AHAR</span>
             </div>
             <p className="font-body text-text-secondary text-sm leading-relaxed max-w-xs">
-              AI-based Food Waste Prediction & Management System. Predicting surplus. Feeding people.
+              <T>AI-based Food Waste Prediction & Management System. Predicting surplus. Feeding people.</T>
             </p>
             <p className="font-heading text-xs mt-4" style={{ color: '#E23744', letterSpacing: '0.15em' }}>
-              PREDICT WASTE. FEED PEOPLE.
+              <T>PREDICT WASTE. FEED PEOPLE.</T>
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <p className="font-heading text-xs text-white tracking-widest mb-4" style={{ letterSpacing: '0.18em' }}>PLATFORM</p>
+            <p className="font-heading text-xs text-white tracking-widest mb-4" style={{ letterSpacing: '0.18em' }}><T>PLATFORM</T></p>
             <ul className="space-y-2.5">
               {['Features', 'NGO Network', 'Dashboard', 'Donate Food'].map((item) => (
                 <li key={item}>
@@ -51,7 +52,7 @@ export default function Footer() {
                     href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
                     className="font-body text-text-secondary text-sm hover:text-white transition-colors"
                   >
-                    {item}
+                    <T>{item}</T>
                   </Link>
                 </li>
               ))}
@@ -60,7 +61,7 @@ export default function Footer() {
 
           {/* Social / mission */}
           <div>
-            <p className="font-heading text-xs text-white tracking-widest mb-4" style={{ letterSpacing: '0.18em' }}>MISSION</p>
+            <p className="font-heading text-xs text-white tracking-widest mb-4" style={{ letterSpacing: '0.18em' }}><T>MISSION</T></p>
             <ul className="space-y-2">
               {[
                 { label: '🍽 0 Meals Wasted', color: '#30D5C8' },
@@ -68,7 +69,7 @@ export default function Footer() {
                 { label: '🌍 Zero Carbon Waste', color: '#E23744' },
               ].map((item) => (
                 <li key={item.label}>
-                  <span className="font-body text-sm" style={{ color: item.color }}>{item.label}</span>
+                  <span className="font-body text-sm" style={{ color: item.color }}><T>{item.label}</T></span>
                 </li>
               ))}
             </ul>
@@ -81,12 +82,12 @@ export default function Footer() {
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
         >
           <p className="font-body text-text-secondary text-xs">
-            © {year} AHAR. Built with purpose at Reckon 7.0.
+            © {year} <T>AHAR. Built with purpose at Reckon 7.0.</T>
           </p>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-accent-turquoise animate-pulse" />
             <span className="font-heading text-xs text-text-secondary" style={{ letterSpacing: '0.15em' }}>
-              SYSTEM OPERATIONAL
+              <T>SYSTEM OPERATIONAL</T>
             </span>
           </div>
         </div>

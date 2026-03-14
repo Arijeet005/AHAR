@@ -5,6 +5,7 @@ import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
 import { Sparkline } from '@/components/ui/Charts';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslate, T } from '@/hooks/useTranslate';
 
 type DashTab = 'key' | 'range' | 'reports';
 
@@ -17,13 +18,24 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
     setTab(tabFromQuery);
   }, [tabFromQuery]);
 
+  // Tab label translations
+  const tKeyAnalytics = useTranslate('Key Analytics');
+  const tTimeRangeAnalytics = useTranslate('Time Range Analytics');
+  const tReports = useTranslate('Reports');
+
+  // Range button translations
+  const t1Week = useTranslate('1 Week');
+  const t1Month = useTranslate('1 Month');
+  const t1Year = useTranslate('1 Year');
+  const tAllTime = useTranslate('All Time');
+
   const tabs = useMemo(
     () => [
-      { key: 'key' as const, label: 'Key Analytics' },
-      { key: 'range' as const, label: 'Time Range Analytics' },
-      { key: 'reports' as const, label: 'Reports' },
+      { key: 'key' as const, label: tKeyAnalytics },
+      { key: 'range' as const, label: tTimeRangeAnalytics },
+      { key: 'reports' as const, label: tReports },
     ],
-    []
+    [tKeyAnalytics, tTimeRangeAnalytics, tReports]
   );
 
   const history = useMemo(
@@ -68,7 +80,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
               { label: 'Plates Saved', value: '9,120' },
             ].map((kpi) => (
               <Card key={kpi.label} className="p-4 border border-white/10">
-                <CardTitle>{kpi.label}</CardTitle>
+                <CardTitle><T>{kpi.label}</T></CardTitle>
                 <p className="font-heading font-black text-2xl mt-2 text-text-primary">{kpi.value}</p>
                 <div
                   className="mt-3 h-px w-full"
@@ -82,8 +94,8 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
             <Card className="p-5 xl:col-span-2 border border-white/10">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <CardTitle>Waste Trend</CardTitle>
-                  <p className="font-body text-xs text-text-secondary mt-1">Last N predictions</p>
+                  <CardTitle><T>Waste Trend</T></CardTitle>
+                  <p className="font-body text-xs text-text-secondary mt-1"><T>Last N predictions</T></p>
                 </div>
                 <Badge tone="warn">LIVE</Badge>
               </div>
@@ -95,8 +107,8 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
             <Card className="p-5 border border-white/10">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <CardTitle>Efficiency Progress</CardTitle>
-                  <p className="font-body text-xs text-text-secondary mt-1">Higher is better</p>
+                  <CardTitle><T>Efficiency Progress</T></CardTitle>
+                  <p className="font-body text-xs text-text-secondary mt-1"><T>Higher is better</T></p>
                 </div>
                 <Badge tone="good">OK</Badge>
               </div>
@@ -108,7 +120,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
             <Card className="p-5 xl:col-span-1 border border-white/10">
-              <CardTitle>Latest Prediction Snapshot</CardTitle>
+              <CardTitle><T>Latest Prediction Snapshot</T></CardTitle>
               <div className="mt-4 grid grid-cols-2 gap-3">
                 {[
                   { k: 'Date & time', v: 'Today, 7:30 PM' },
@@ -121,7 +133,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                   { k: 'Weather Multiplier', v: '1.00x' },
                 ].map((row) => (
                   <div key={row.k} className="glass p-3 rounded-sm border border-white/10">
-                    <p className="font-body text-[11px] text-text-secondary">{row.k}</p>
+                    <p className="font-body text-[11px] text-text-secondary"><T>{row.k}</T></p>
                     <p className="font-heading font-bold text-sm mt-1 text-text-primary">{row.v}</p>
                   </div>
                 ))}
@@ -129,13 +141,13 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
             </Card>
 
             <Card className="p-5 xl:col-span-2 border border-white/10 overflow-x-auto">
-              <CardTitle>Prediction History</CardTitle>
+              <CardTitle><T>Prediction History</T></CardTitle>
               <table className="w-full mt-4 text-sm">
                 <thead>
                   <tr className="text-text-secondary font-body text-xs">
                     {['Date', 'Expected', 'Predicted', 'Waste', 'Efficiency', 'Risk', 'Donation'].map((h) => (
                       <th key={h} className="text-left py-2 pr-3 whitespace-nowrap">
-                        {h}
+                        <T>{h}</T>
                       </th>
                     ))}
                   </tr>
@@ -149,10 +161,10 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                       <td className="py-2 pr-3 whitespace-nowrap text-text-secondary">{row.waste}</td>
                       <td className="py-2 pr-3 whitespace-nowrap text-text-secondary">{row.efficiency}%</td>
                       <td className="py-2 pr-3 whitespace-nowrap">
-                        <Badge tone={row.risk === 'High' ? 'bad' : 'good'}>{row.risk}</Badge>
+                        <Badge tone={row.risk === 'High' ? 'bad' : 'good'}><T>{row.risk}</T></Badge>
                       </td>
                       <td className="py-2 pr-3 whitespace-nowrap">
-                        <Badge tone={row.donation === 'Yes' ? 'warn' : 'neutral'}>{row.donation}</Badge>
+                        <Badge tone={row.donation === 'Yes' ? 'warn' : 'neutral'}><T>{row.donation}</T></Badge>
                       </td>
                     </tr>
                   ))}
@@ -167,10 +179,10 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
             {[
-              { k: '1w' as const, label: '1 Week' },
-              { k: '1m' as const, label: '1 Month' },
-              { k: '1y' as const, label: '1 Year' },
-              { k: 'all' as const, label: 'All Time' },
+              { k: '1w' as const, label: t1Week },
+              { k: '1m' as const, label: t1Month },
+              { k: '1y' as const, label: t1Year },
+              { k: 'all' as const, label: tAllTime },
             ].map((b) => {
               const isActive = range === b.k;
               return (
@@ -193,8 +205,8 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
             <Card className="p-5 xl:col-span-2 border border-white/10">
-              <CardTitle>Waste + Efficiency Over Time</CardTitle>
-              <p className="font-body text-xs text-text-secondary mt-1">Range: {range.toUpperCase()}</p>
+              <CardTitle><T>Waste + Efficiency Over Time</T></CardTitle>
+              <p className="font-body text-xs text-text-secondary mt-1"><T>Range:</T> {range.toUpperCase()}</p>
               <div className="mt-4">
                 <Sparkline data={wasteTrend} stroke="var(--color-accent-red)" fill="rgba(226,55,68,0.14)" />
                 <div className="mt-2">
@@ -204,8 +216,8 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
             </Card>
 
             <Card className="p-5 border border-white/10">
-              <CardTitle>Donations Recommended</CardTitle>
-              <p className="font-body text-xs text-text-secondary mt-1">Count over time</p>
+              <CardTitle><T>Donations Recommended</T></CardTitle>
+              <p className="font-body text-xs text-text-secondary mt-1"><T>Count over time</T></p>
               <div className="mt-4">
                 <Sparkline
                   data={history.slice().reverse().map((h) => (h.donation === 'Yes' ? 1 : 0))}
@@ -221,8 +233,8 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
       {tab === 'reports' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10">
-            <CardTitle>Download Weekly Report (PDF)</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">Executive summary of waste and efficiency.</p>
+            <CardTitle><T>Download Weekly Report (PDF)</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Executive summary of waste and efficiency.</T></p>
             <button
               className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
               style={{
@@ -231,13 +243,13 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 letterSpacing: '0.14em',
               }}
             >
-              DOWNLOAD
+              <T>DOWNLOAD</T>
             </button>
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle>Download Monthly Report (PDF)</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">Trends, anomalies, and actions.</p>
+            <CardTitle><T>Download Monthly Report (PDF)</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Trends, anomalies, and actions.</T></p>
             <button
               className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
               style={{
@@ -246,13 +258,13 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 letterSpacing: '0.14em',
               }}
             >
-              DOWNLOAD
+              <T>DOWNLOAD</T>
             </button>
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle>Download Custom CSV</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">Export raw prediction history.</p>
+            <CardTitle><T>Download Custom CSV</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Export raw prediction history.</T></p>
             <button
               className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
               style={{
@@ -262,12 +274,12 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 letterSpacing: '0.14em',
               }}
             >
-              EXPORT
+              <T>EXPORT</T>
             </button>
           </Card>
 
           <Card className="p-5 border border-white/10 xl:col-span-3">
-            <CardTitle>Generate Report</CardTitle>
+            <CardTitle><T>Generate Report</T></CardTitle>
             <div className="mt-4 flex flex-col md:flex-row gap-3">
               <input
                 className="glass px-3 py-2 rounded-sm font-body text-sm text-text-primary border border-white/10"
@@ -287,7 +299,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                   letterSpacing: '0.14em',
                 }}
               >
-                GENERATE
+                <T>GENERATE</T>
               </button>
             </div>
           </Card>

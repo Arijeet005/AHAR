@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Card, CardTitle } from '@/components/ui/Card';
+import { T, useTranslate } from '@/hooks/useTranslate';
 
 type Weather = 'Clear' | 'Rain' | 'Cloudy';
 type EventType = 'Normal' | 'Wedding' | 'Conference' | 'Festival';
@@ -17,6 +18,7 @@ export default function PredictionView() {
   const [result, setResult] = useState<null | { predicted: number; waste: number; efficiency: number; rec: 'Donate' | 'Normal' }>(
     null
   );
+  const contextPlaceholder = useTranslate('Add food / menu context...');
 
   useEffect(() => {
     setDateTime(new Date().toISOString().slice(0, 16));
@@ -35,19 +37,19 @@ export default function PredictionView() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
       <Card className="p-5 border border-white/10 xl:col-span-2">
-        <CardTitle>AI Demand Prediction</CardTitle>
+        <CardTitle><T>AI Demand Prediction</T></CardTitle>
         <p className="font-body text-sm text-text-secondary mt-2">
-          Enter meal context and operational signals. AHAR estimates plates required and potential waste.
+          <T>Enter meal context and operational signals. AHAR estimates plates required and potential waste.</T>
         </p>
 
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="md:col-span-2">
-            <p className="font-body text-xs text-text-secondary mb-2">Meal context (MyFitnessPal style)</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Meal context (MyFitnessPal style)</T></p>
             <div className="glass border border-white/10 rounded-sm flex items-center gap-2 px-3 py-2.5">
               <span className="text-text-secondary">⌕</span>
               <input
                 className="bg-transparent outline-none w-full font-body text-sm text-text-primary"
-                placeholder="Add food / menu context (e.g., buffet dinner, veg + non-veg mix, dessert...)"
+                placeholder={contextPlaceholder}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -55,7 +57,7 @@ export default function PredictionView() {
           </div>
 
           <div>
-            <p className="font-body text-xs text-text-secondary mb-2">Expected People</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Expected People</T></p>
             <input
               className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
               type="number"
@@ -66,7 +68,7 @@ export default function PredictionView() {
           </div>
 
           <div>
-            <p className="font-body text-xs text-text-secondary mb-2">Date & Time</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Date & Time</T></p>
             <input
               className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
               type="datetime-local"
@@ -76,20 +78,20 @@ export default function PredictionView() {
           </div>
 
           <div>
-            <p className="font-body text-xs text-text-secondary mb-2">Weather</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Weather</T></p>
             <select
               className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
               value={weather}
               onChange={(e) => setWeather(e.target.value as Weather)}
             >
-              <option>Clear</option>
-              <option>Cloudy</option>
-              <option>Rain</option>
+              <option value="Clear"><T>Clear</T></option>
+              <option value="Cloudy"><T>Cloudy</T></option>
+              <option value="Rain"><T>Rain</T></option>
             </select>
           </div>
 
           <div>
-            <p className="font-body text-xs text-text-secondary mb-2">Event Type</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Event Type</T></p>
             <select
               className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
               value={eventType}
@@ -99,15 +101,15 @@ export default function PredictionView() {
                 setEventMultiplier(v === 'Wedding' ? 1.2 : v === 'Conference' ? 1.1 : v === 'Festival' ? 1.25 : 1.0);
               }}
             >
-              <option>Normal</option>
-              <option>Wedding</option>
-              <option>Conference</option>
-              <option>Festival</option>
+              <option value="Normal"><T>Normal</T></option>
+              <option value="Wedding"><T>Wedding</T></option>
+              <option value="Conference"><T>Conference</T></option>
+              <option value="Festival"><T>Festival</T></option>
             </select>
           </div>
 
           <div>
-            <p className="font-body text-xs text-text-secondary mb-2">Event Multiplier</p>
+            <p className="font-body text-xs text-text-secondary mb-2"><T>Event Multiplier</T></p>
             <input
               className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
               type="number"
@@ -129,15 +131,15 @@ export default function PredictionView() {
             letterSpacing: '0.14em',
           }}
         >
-          RUN PREDICTION
+          <T>RUN PREDICTION</T>
         </button>
       </Card>
 
       <Card className="p-5 border border-white/10">
-        <CardTitle>Prediction Result</CardTitle>
+        <CardTitle><T>Prediction Result</T></CardTitle>
         <div className="mt-4">
           {!result ? (
-            <p className="font-body text-sm text-text-secondary">Run a prediction to see results.</p>
+            <p className="font-body text-sm text-text-secondary"><T>Run a prediction to see results.</T></p>
           ) : (
             <div className="flex flex-col gap-3">
               {[
@@ -147,8 +149,8 @@ export default function PredictionView() {
                 { k: 'Recommendation', v: result.rec === 'Donate' ? 'Donation Recommended' : 'Normal Service' },
               ].map((r) => (
                 <div key={r.k} className="glass p-4 rounded-sm border border-white/10">
-                  <p className="font-body text-xs text-text-secondary">{r.k}</p>
-                  <p className="font-heading font-black text-xl mt-2 text-text-primary">{r.v}</p>
+                  <p className="font-body text-xs text-text-secondary"><T>{r.k}</T></p>
+                  <p className="font-heading font-black text-xl mt-2 text-text-primary"><T>{r.v}</T></p>
                 </div>
               ))}
             </div>

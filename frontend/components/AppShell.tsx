@@ -5,16 +5,18 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useTheme } from '@/lib/theme';
 import { useI18n } from '@/lib/i18n';
+import { T } from '@/hooks/useTranslate';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 type NavItem = {
   key:
-    | 'dashboard'
-    | 'prediction'
-    | 'inventoryHub'
-    | 'donationLocator'
-    | 'payment'
-    | 'guide'
-    | 'pricing';
+  | 'dashboard'
+  | 'prediction'
+  | 'inventoryHub'
+  | 'donationLocator'
+  | 'payment'
+  | 'guide'
+  | 'pricing';
   href: string;
 };
 
@@ -85,7 +87,7 @@ function pageTitleFromPath(pathname: string) {
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
-  const { lang, setLang, t } = useI18n();
+  const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeHash, setActiveHash] = useState('dashboard');
 
@@ -124,34 +126,34 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const subMenu = useMemo(() => {
     return {
       dashboard: [
-        { label: 'Key Analytics', href: '/dashboard?tab=key' },
-        { label: 'Time Range', href: '/dashboard?tab=range' },
-        { label: 'Reports', href: '/dashboard?tab=reports' },
+        { label: 'Key Analytics', href: '/dashboard?tab=key' as const },
+        { label: 'Time Range', href: '/dashboard?tab=range' as const },
+        { label: 'Reports', href: '/dashboard?tab=reports' as const },
       ],
-      prediction: [{ label: 'Run Prediction', href: '/prediction' }],
+      prediction: [{ label: 'Run Prediction', href: '/prediction' as const }],
       inventoryHub: [
-        { label: 'All', href: '/inventory?tab=all' },
-        { label: 'Expiry Soon', href: '/inventory?tab=soon' },
-        { label: 'Add Item', href: '/inventory?tab=add' },
-        { label: 'Expired', href: '/inventory?tab=expired' },
+        { label: 'All', href: '/inventory?tab=all' as const },
+        { label: 'Expiry Soon', href: '/inventory?tab=soon' as const },
+        { label: 'Add Item', href: '/inventory?tab=add' as const },
+        { label: 'Expired', href: '/inventory?tab=expired' as const },
       ],
       donationLocator: [
-        { label: 'Nearest NGOs', href: '/donations?tab=nearest' },
-        { label: 'History', href: '/donations?tab=history' },
-        { label: 'Map', href: '/donations?tab=map' },
+        { label: 'Nearest NGOs', href: '/donations?tab=nearest' as const },
+        { label: 'History', href: '/donations?tab=history' as const },
+        { label: 'Map', href: '/donations?tab=map' as const },
       ],
       payment: [
-        { label: 'Billing', href: '/payment?tab=billing' },
-        { label: 'Invoices', href: '/payment?tab=invoices' },
-        { label: 'Payment Methods', href: '/payment?tab=methods' },
+        { label: 'Billing', href: '/payment?tab=billing' as const },
+        { label: 'Invoices', href: '/payment?tab=invoices' as const },
+        { label: 'Payment Methods', href: '/payment?tab=methods' as const },
       ],
       guide: [
-        { label: 'Getting Started', href: '/guide?tab=start' },
-        { label: 'Features', href: '/guide?tab=features' },
-        { label: 'Talk to Us', href: '/guide?tab=talk' },
-        { label: 'Free Demo', href: '/guide?tab=demo' },
+        { label: 'Getting Started', href: '/guide?tab=start' as const },
+        { label: 'Features', href: '/guide?tab=features' as const },
+        { label: 'Talk to Us', href: '/guide?tab=talk' as const },
+        { label: 'Free Demo', href: '/guide?tab=demo' as const },
       ],
-      pricing: [{ label: 'Plans', href: '/pricing' }],
+      pricing: [{ label: 'Plans', href: '/pricing' as const }],
     } satisfies Record<NavItem['key'], { label: string; href: string }[]>;
   }, []);
 
@@ -182,7 +184,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <p className="font-heading font-black tracking-widest" style={{ letterSpacing: '0.22em' }}>
               AHAR
             </p>
-            <p className="font-body text-xs text-text-secondary">Hospitality Optimizer</p>
+            <p className="font-body text-xs text-text-secondary"><T>Hospitality Optimizer</T></p>
           </div>
         </Link>
         <button
@@ -219,7 +221,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   <span className="shrink-0">
                     <Icon name={item.key} />
                   </span>
-                  <span className="font-body text-sm">{t(item.key)}</span>
+                  <span className="font-body text-sm"><T>{t(item.key)}</T></span>
                 </Link>
 
                 {active && subMenu[item.key]?.length ? (
@@ -232,7 +234,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                           className="block px-3 py-1.5 rounded-sm font-body text-xs text-text-secondary hover:text-text-primary"
                           style={{ border: '1px solid var(--glass-border)' }}
                         >
-                          {s.label}
+                          <T>{s.label}</T>
                         </Link>
                       </li>
                     ))}
@@ -249,8 +251,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <p className="font-heading text-xs tracking-widest text-text-secondary" style={{ letterSpacing: '0.18em' }}>
             STATUS
           </p>
-          <p className="font-body text-sm text-text-primary mt-1">AI models: Online</p>
-          <p className="font-body text-xs text-text-secondary mt-1">Last sync: just now</p>
+          <p className="font-body text-sm text-text-primary mt-1"><T>AI models: Online</T></p>
+          <p className="font-body text-xs text-text-secondary mt-1"><T>Last sync: just now</T></p>
         </div>
       </div>
     </aside>
@@ -285,47 +287,39 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <header className="sticky top-0 z-50 border-b bg-base-dark/70 backdrop-blur-md" style={{ borderColor: 'var(--glass-border)' }}>
             <div className="px-5 md:px-8 py-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
-	                <button
-	                  className="md:hidden glass px-3 py-2 rounded-sm text-text-secondary hover:text-text-primary"
-	                  onClick={() => setMobileOpen(true)}
-	                  aria-label="Open navigation"
-	                >
-	                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-	                    <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-	                  </svg>
-	                </button>
+                <button
+                  className="md:hidden glass px-3 py-2 rounded-sm text-text-secondary hover:text-text-primary"
+                  onClick={() => setMobileOpen(true)}
+                  aria-label="Open navigation"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
                 <div className="min-w-0">
                   <p className="font-heading font-black text-xl text-text-primary truncate">{title}</p>
-	                  <p className="font-body text-xs text-text-secondary truncate">
-	                    AHAR - AI-based Hospitality and Resource Optimizer
-	                  </p>
+                  <p className="font-body text-xs text-text-secondary truncate">
+                    <T>AHAR - AI-based Hospitality and Resource Optimizer</T>
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <select
-                  className="glass px-3 py-2 rounded-sm font-body text-xs text-text-primary outline-none"
-                  value={lang}
-                  onChange={(e) => setLang(e.target.value as 'en' | 'hi')}
-                  aria-label={t('language')}
-                >
-                  <option value="en">EN</option>
-                  <option value="hi">HI</option>
-                </select>
+                <LanguageSwitcher />
 
                 <button
                   className="glass px-3 py-2 rounded-sm font-body text-xs text-text-primary"
                   onClick={toggleTheme}
                   aria-label={t('theme')}
                 >
-                  {theme === 'dark' ? 'Dark' : 'Light'}
+                  {theme === 'dark' ? <T>Dark</T> : <T>Light</T>}
                 </button>
 
                 <Link
                   href="/login"
                   className="hidden sm:inline-flex glass px-3 py-2 rounded-sm font-body text-xs text-text-primary hover:border-white/20"
                 >
-                  {t('login')}
+                  <T>{t('login')}</T>
                 </Link>
                 <Link
                   href="/register"
@@ -336,7 +330,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     letterSpacing: '0.14em',
                   }}
                 >
-                  {t('register')}
+                  <T>{t('register')}</T>
                 </Link>
               </div>
             </div>

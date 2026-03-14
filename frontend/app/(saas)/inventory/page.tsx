@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslate, T } from '@/hooks/useTranslate';
 
 type InvTab = 'all' | 'soon' | 'add' | 'expired';
 
@@ -32,6 +33,17 @@ export default function InventoryPage() {
   const [method, setMethod] = useState<'autofill' | 'new'>('autofill');
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
+
+  // Tab label translations
+  const tAll = useTranslate('All');
+  const tExpirySoon = useTranslate('Expiry Soon');
+  const tAddItem = useTranslate('Add Item');
+  const tExpired = useTranslate('Expired');
+  const tExpiredDaysAgo = useTranslate('days ago');
+  const tExpiresToday = useTranslate('Expires today');
+  const tDaysLeft = useTranslate('days left');
+  const tNewItem = useTranslate('New item');
+  const tCategory = useTranslate('Category');
 
   useEffect(() => {
     if (tabParam !== 'all' && tabParam !== 'soon' && tabParam !== 'add' && tabParam !== 'expired') return;
@@ -83,12 +95,12 @@ export default function InventoryPage() {
 
   const tabs = useMemo(
     () => [
-      { key: 'all' as const, label: 'All' },
-      { key: 'soon' as const, label: 'Expiry Soon' },
-      { key: 'add' as const, label: 'Add Item' },
-      { key: 'expired' as const, label: 'Expired' },
+      { key: 'all' as const, label: tAll },
+      { key: 'soon' as const, label: tExpirySoon },
+      { key: 'add' as const, label: tAddItem },
+      { key: 'expired' as const, label: tExpired },
     ],
-    []
+    [tAll, tExpirySoon, tAddItem, tExpired]
   );
 
   const filtered = useMemo(() => {
@@ -126,7 +138,7 @@ export default function InventoryPage() {
           {filtered.map((it) => {
             const d = daysUntil(it.expiry);
             const tone = d < 0 ? 'bad' : d <= 3 ? 'warn' : 'good';
-            const label = d < 0 ? `Expired ${Math.abs(d)} days ago` : d === 0 ? 'Expires today' : `${d} days left`;
+            const label = d < 0 ? `${tExpired} ${Math.abs(d)} ${tExpiredDaysAgo}` : d === 0 ? tExpiresToday : `${d} ${tDaysLeft}`;
             const progress = Math.max(0, Math.min(100, Math.round(((d < 0 ? 0 : d) / 10) * 100)));
             return (
               <Card key={it.id} className="overflow-hidden border border-white/10">
@@ -149,10 +161,10 @@ export default function InventoryPage() {
 
                   <div className="mt-3 flex items-center justify-between text-sm">
                     <p className="font-body text-text-secondary">
-                      Qty: <span className="text-text-primary font-semibold">{it.qty} {it.unit}</span>
+                      <T>Qty:</T> <span className="text-text-primary font-semibold">{it.qty} {it.unit}</span>
                     </p>
                     <p className="font-body text-text-secondary">
-                      Exp: <span className="text-text-primary font-semibold">{it.expiry}</span>
+                      <T>Exp:</T> <span className="text-text-primary font-semibold">{it.expiry}</span>
                     </p>
                   </div>
 
@@ -180,8 +192,8 @@ export default function InventoryPage() {
       {tab === 'add' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10 xl:col-span-2">
-            <CardTitle>Add Item</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">Choose a method.</p>
+            <CardTitle><T>Add Item</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Choose a method.</T></p>
 
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <button
@@ -194,7 +206,7 @@ export default function InventoryPage() {
                   color: method === 'autofill' ? 'var(--color-accent-turquoise)' : 'var(--color-text-secondary)',
                 }}
               >
-                METHOD 1 – SMART AUTOFILL
+                <T>METHOD 1 – SMART AUTOFILL</T>
               </button>
               <button
                 onClick={() => setMethod('new')}
@@ -206,14 +218,14 @@ export default function InventoryPage() {
                   color: method === 'new' ? 'var(--color-accent-orange)' : 'var(--color-text-secondary)',
                 }}
               >
-                METHOD 2 – NEW ITEM ENTRY
+                <T>METHOD 2 – NEW ITEM ENTRY</T>
               </button>
             </div>
 
             {method === 'autofill' && (
               <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Select Item</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Select Item</T></p>
                   <select
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     value={selectedName}
@@ -227,7 +239,7 @@ export default function InventoryPage() {
                   </select>
                 </div>
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Quantity</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Quantity</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     type="number"
@@ -236,7 +248,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Expiry Date</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Expiry Date</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     type="date"
@@ -250,7 +262,7 @@ export default function InventoryPage() {
             {method === 'new' && (
               <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Item Name</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Item Name</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     value={newItem.name}
@@ -258,7 +270,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Category</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Category</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     value={newItem.category}
@@ -266,7 +278,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Quantity + Unit</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Quantity + Unit</T></p>
                   <div className="flex gap-2">
                     <input
                       className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
@@ -282,7 +294,7 @@ export default function InventoryPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="font-body text-xs text-text-secondary mb-2">Expiry Date</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Expiry Date</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     type="date"
@@ -291,7 +303,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <p className="font-body text-xs text-text-secondary mb-2">Image URL</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Image URL</T></p>
                   <input
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary"
                     value={newItem.imageUrl}
@@ -300,7 +312,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <p className="font-body text-xs text-text-secondary mb-2">Notes</p>
+                  <p className="font-body text-xs text-text-secondary mb-2"><T>Notes</T></p>
                   <textarea
                     className="glass w-full border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary min-h-24"
                     value={newItem.notes}
@@ -319,7 +331,7 @@ export default function InventoryPage() {
                   letterSpacing: '0.14em',
                 }}
               >
-                SAVE ITEM
+                <T>SAVE ITEM</T>
               </button>
               <button
                 className="px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
@@ -331,13 +343,13 @@ export default function InventoryPage() {
                 }}
                 onClick={() => setNewItem({ name: '', category: '', qty: 0, unit: 'kg', expiry: '', imageUrl: '', notes: '' })}
               >
-                RESET
+                <T>RESET</T>
               </button>
             </div>
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle>Preview</CardTitle>
+            <CardTitle><T>Preview</T></CardTitle>
             <div className="mt-4">
               {method === 'autofill' && selectedItem ? (
                 <div className="overflow-hidden rounded-sm border border-white/10">
@@ -353,10 +365,10 @@ export default function InventoryPage() {
                     <p className="font-heading font-black text-lg text-text-primary">{selectedItem.name}</p>
                     <p className="font-body text-sm text-text-secondary mt-1">{selectedItem.category}</p>
                     <p className="font-body text-sm text-text-secondary mt-2">
-                      Qty: <span className="text-text-primary font-semibold">{editQty}</span>
+                      <T>Qty:</T> <span className="text-text-primary font-semibold">{editQty}</span>
                     </p>
                     <p className="font-body text-sm text-text-secondary mt-1">
-                      Expiry: <span className="text-text-primary font-semibold">{editExpiry}</span>
+                      <T>Expiry:</T> <span className="text-text-primary font-semibold">{editExpiry}</span>
                     </p>
                   </div>
                 </div>
@@ -373,16 +385,16 @@ export default function InventoryPage() {
                     }}
                   />
                   <div className="p-4">
-                    <p className="font-heading font-black text-lg text-text-primary">{newItem.name || 'New item'}</p>
-                    <p className="font-body text-sm text-text-secondary mt-1">{newItem.category || 'Category'}</p>
+                    <p className="font-heading font-black text-lg text-text-primary">{newItem.name || tNewItem}</p>
+                    <p className="font-body text-sm text-text-secondary mt-1">{newItem.category || tCategory}</p>
                     <p className="font-body text-sm text-text-secondary mt-2">
-                      Qty:{' '}
+                      <T>Qty:</T>{' '}
                       <span className="text-text-primary font-semibold">
                         {newItem.qty || 0} {newItem.unit}
                       </span>
                     </p>
                     <p className="font-body text-sm text-text-secondary mt-1">
-                      Expiry: <span className="text-text-primary font-semibold">{newItem.expiry || '-'}</span>
+                      <T>Expiry:</T> <span className="text-text-primary font-semibold">{newItem.expiry || '-'}</span>
                     </p>
                   </div>
                 </div>

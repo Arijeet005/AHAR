@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
+import { useTranslate, T } from '@/hooks/useTranslate';
 
 type PayTab = 'billing' | 'invoices' | 'methods';
 
@@ -12,6 +13,11 @@ export default function PaymentPage() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
 
+  // Tab label translations
+  const tBilling = useTranslate('Billing');
+  const tInvoices = useTranslate('Invoices');
+  const tPaymentMethods = useTranslate('Payment Methods');
+
   useEffect(() => {
     if (tabParam !== 'billing' && tabParam !== 'invoices' && tabParam !== 'methods') return;
     setTab(tabParam);
@@ -19,11 +25,11 @@ export default function PaymentPage() {
 
   const tabs = useMemo(
     () => [
-      { key: 'billing' as const, label: 'Billing' },
-      { key: 'invoices' as const, label: 'Invoices' },
-      { key: 'methods' as const, label: 'Payment Methods' },
+      { key: 'billing' as const, label: tBilling },
+      { key: 'invoices' as const, label: tInvoices },
+      { key: 'methods' as const, label: tPaymentMethods },
     ],
-    []
+    [tBilling, tInvoices, tPaymentMethods]
   );
 
   return (
@@ -33,9 +39,9 @@ export default function PaymentPage() {
       {tab === 'billing' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10 xl:col-span-2">
-            <CardTitle>Current Plan</CardTitle>
+            <CardTitle><T>Current Plan</T></CardTitle>
             <p className="font-heading font-black text-3xl mt-3 text-text-primary">Pro</p>
-            <p className="font-body text-sm text-text-secondary mt-2">Renewal: 2026-04-01</p>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Renewal:</T> 2026-04-01</p>
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <button
                 className="px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
@@ -45,7 +51,7 @@ export default function PaymentPage() {
                   letterSpacing: '0.14em',
                 }}
               >
-                UPGRADE
+                <T>UPGRADE</T>
               </button>
               <button
                 className="px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
@@ -56,19 +62,19 @@ export default function PaymentPage() {
                   letterSpacing: '0.14em',
                 }}
               >
-                MANAGE BILLING
+                <T>MANAGE BILLING</T>
               </button>
             </div>
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle>Pricing Summary</CardTitle>
+            <CardTitle><T>Pricing Summary</T></CardTitle>
             <div className="mt-4 glass p-4 rounded-sm border border-white/10">
-              <p className="font-body text-sm text-text-secondary">Monthly</p>
+              <p className="font-body text-sm text-text-secondary"><T>Monthly</T></p>
               <p className="font-heading font-black text-2xl text-text-primary mt-1">₹ 4,999</p>
             </div>
             <div className="mt-3 glass p-4 rounded-sm border border-white/10">
-              <p className="font-body text-sm text-text-secondary">Yearly</p>
+              <p className="font-body text-sm text-text-secondary"><T>Yearly</T></p>
               <p className="font-heading font-black text-2xl text-text-primary mt-1">₹ 49,999</p>
             </div>
           </Card>
@@ -77,12 +83,12 @@ export default function PaymentPage() {
 
       {tab === 'invoices' && (
         <Card className="p-5 border border-white/10">
-          <CardTitle>Invoices</CardTitle>
+          <CardTitle><T>Invoices</T></CardTitle>
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {['2026-03', '2026-02', '2026-01'].map((m) => (
               <div key={m} className="glass p-4 rounded-sm border border-white/10">
                 <p className="font-heading font-bold text-text-primary">{m}</p>
-                <p className="font-body text-sm text-text-secondary mt-1">AHAR Pro Subscription</p>
+                <p className="font-body text-sm text-text-secondary mt-1"><T>AHAR Pro Subscription</T></p>
                 <button
                   className="mt-3 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
                   style={{
@@ -92,7 +98,7 @@ export default function PaymentPage() {
                     letterSpacing: '0.14em',
                   }}
                 >
-                  DOWNLOAD PDF
+                  <T>DOWNLOAD PDF</T>
                 </button>
               </div>
             ))}
@@ -103,7 +109,7 @@ export default function PaymentPage() {
       {tab === 'methods' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10 xl:col-span-2">
-            <CardTitle>Stored Payment Methods</CardTitle>
+            <CardTitle><T>Stored Payment Methods</T></CardTitle>
             <div className="mt-4 flex flex-col gap-3">
               {[
                 { brand: 'Visa', last4: '4242', exp: '08/28' },
@@ -117,7 +123,7 @@ export default function PaymentPage() {
                     <p className="font-heading font-bold text-text-primary">
                       {c.brand} •••• {c.last4}
                     </p>
-                    <p className="font-body text-sm text-text-secondary mt-1">Expires {c.exp}</p>
+                    <p className="font-body text-sm text-text-secondary mt-1"><T>Expires</T> {c.exp}</p>
                   </div>
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
@@ -128,7 +134,7 @@ export default function PaymentPage() {
                       letterSpacing: '0.14em',
                     }}
                   >
-                    REMOVE
+                    <T>REMOVE</T>
                   </button>
                 </div>
               ))}
@@ -136,8 +142,8 @@ export default function PaymentPage() {
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle>Add New Method</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">Connect a new card (placeholder UI).</p>
+            <CardTitle><T>Add New Method</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>Connect a new card (placeholder UI).</T></p>
             <button
               className="mt-4 w-full py-3 rounded-sm font-heading text-xs tracking-widest"
               style={{
@@ -146,7 +152,7 @@ export default function PaymentPage() {
                 letterSpacing: '0.14em',
               }}
             >
-              ADD CARD
+              <T>ADD CARD</T>
             </button>
           </Card>
         </div>

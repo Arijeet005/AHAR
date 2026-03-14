@@ -3,6 +3,7 @@
 import { useTransform, MotionValue, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { HUD_PHASES, SOLUTION_CARDS, BACKEND_BASE } from '@/data/aharData';
+import { T } from '@/hooks/useTranslate';
 
 interface HeroScrollExperienceProps {
   scrollYProgress: MotionValue<number>;
@@ -55,7 +56,7 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
     fetch(`${BACKEND_BASE}/api/analytics/waste-dashboard`)
       .then((r) => r.json())
       .then((d) => { if (d?.data) setDashData(d.data); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // ────────── Phase 1: 0→30% (Problem) ──────────
@@ -147,16 +148,16 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
         {/* Left edge — big stat */}
         <div className="max-w-[45%]">
           <p className="font-body text-accent-red text-xs tracking-widest uppercase mb-3" style={{ letterSpacing: '0.2em' }}>
-            GLOBAL FOOD WASTE
+            <T>GLOBAL FOOD WASTE</T>
           </p>
           <h2
             className="font-heading font-black text-white leading-none mb-6"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', textShadow: '0 0 40px rgba(226,55,68,0.4)' }}
           >
             1/3 of all food<br />
-            <span className="text-accent-red">produced</span><br />
-            globally is<br />
-            <span className="text-accent-red">wasted.</span>
+            <span className="text-accent-red"><T>produced</T></span><br />
+            <T>globally is</T><br />
+            <span className="text-accent-red"><T>wasted.</T></span>
           </h2>
           <div className="flex items-center gap-2">
             <div className="w-8 h-px bg-accent-red" />
@@ -180,7 +181,7 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
               <p className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', color: stat.accent }}>
                 {stat.value}
               </p>
-              <p className="font-body text-text-secondary text-sm">{stat.label}</p>
+              <p className="font-body text-text-secondary text-sm"><T>{stat.label}</T></p>
             </motion.div>
           ))}
         </div>
@@ -192,14 +193,14 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
         style={{ opacity: phase2Opacity, y: phase2TranslateY }}
       >
         <p className="font-body text-accent-orange text-xs tracking-widest uppercase mb-4 text-center" style={{ letterSpacing: '0.2em' }}>
-          AHAR SYSTEM ARCHITECTURE
+          <T>AHAR SYSTEM ARCHITECTURE</T>
         </p>
         <h2
           className="font-heading font-black text-white text-center mb-10"
           style={{ fontSize: 'clamp(1.8rem, 4vw, 3.5rem)' }}
         >
-          AI predicts surplus.<br />
-          <span className="text-accent-orange">NGOs collect it.</span>
+          <T>AI predicts surplus.</T><br />
+          <span className="text-accent-orange"><T>NGOs collect it.</T></span>
         </h2>
 
         {/* HUD cards */}
@@ -223,12 +224,12 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
 
                 <p className="text-2xl mb-3">{card.icon}</p>
                 <p className="font-heading font-bold text-white text-sm mb-2" style={{ letterSpacing: '0.08em' }}>
-                  {card.title}
+                  <T>{card.title}</T>
                 </p>
-                <p className="font-body text-text-secondary text-sm leading-relaxed mb-4">{card.desc}</p>
+                <p className="font-body text-text-secondary text-sm leading-relaxed mb-4"><T>{card.desc}</T></p>
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-heading font-black text-2xl" style={{ color: hex }}>{card.stat}</span>
-                  <span className="font-body text-xs text-text-secondary">{card.statLabel}</span>
+                  <span className="font-body text-xs text-text-secondary"><T>{card.statLabel}</T></span>
                 </div>
 
                 {/* Live data from API */}
@@ -254,7 +255,7 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
         style={{ opacity: phase3Opacity, y: phase3TranslateY }}
       >
         <p className="font-body text-accent-turquoise text-xs tracking-widest uppercase mb-4 text-center" style={{ letterSpacing: '0.2em' }}>
-          MISSION IMPACT
+          <T>MISSION IMPACT</T>
         </p>
         <h2
           className="font-heading font-black text-center mb-4"
@@ -266,16 +267,16 @@ export default function HeroScrollExperience({ scrollYProgress }: HeroScrollExpe
             lineHeight: 1.05,
           }}
         >
-          Predict Waste.<br />Feed People.
+          <T>Predict Waste.</T><br /><T>Feed People.</T>
         </h2>
         <p className="font-body text-text-secondary text-base text-center max-w-md mb-12">
-          Every prediction. Every donation. Every meal. Tracked in real time.
+          <T>Every prediction. Every donation. Every meal. Tracked in real time.</T>
         </p>
 
         {/* Bottom edge — scroll prompt */}
         <div className="flex items-center gap-3">
           <div className="w-16 h-px bg-accent-turquoise opacity-40" />
-          <p className="font-body text-xs text-text-secondary tracking-widest uppercase" style={{ letterSpacing: '0.2em' }}>Scroll to explore</p>
+          <p className="font-body text-xs text-text-secondary tracking-widest uppercase" style={{ letterSpacing: '0.2em' }}><T>Scroll to explore</T></p>
           <div className="w-16 h-px bg-accent-turquoise opacity-40" />
         </div>
       </motion.div>

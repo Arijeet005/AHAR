@@ -6,6 +6,7 @@ import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
 import { Badge } from '@/components/ui/Badge';
 import NGOLocator from '@/components/NGOLocator';
+import { useTranslate, T } from '@/hooks/useTranslate';
 
 type DonTab = 'nearest' | 'history' | 'map';
 
@@ -14,6 +15,11 @@ export default function DonationsPage() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
 
+  // Tab label translations
+  const tNearestNGOs = useTranslate('Nearest NGOs');
+  const tHistory = useTranslate('History');
+  const tMap = useTranslate('Map (optional)');
+
   useEffect(() => {
     if (tabParam !== 'nearest' && tabParam !== 'history' && tabParam !== 'map') return;
     setTab(tabParam);
@@ -21,11 +27,11 @@ export default function DonationsPage() {
 
   const tabs = useMemo(
     () => [
-      { key: 'nearest' as const, label: 'Nearest NGOs' },
-      { key: 'history' as const, label: 'History' },
-      { key: 'map' as const, label: 'Map (optional)' },
+      { key: 'nearest' as const, label: tNearestNGOs },
+      { key: 'history' as const, label: tHistory },
+      { key: 'map' as const, label: tMap },
     ],
-    []
+    [tNearestNGOs, tHistory, tMap]
   );
 
   const ngos = useMemo(
@@ -63,7 +69,7 @@ export default function DonationsPage() {
                   </div>
                   <Badge tone="good">{ngo.dist.toFixed(1)} km</Badge>
                 </div>
-                <p className="font-body text-xs text-text-secondary mt-4">Contact: {ngo.phone}</p>
+                <p className="font-body text-xs text-text-secondary mt-4"><T>Contact:</T> {ngo.phone}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
@@ -73,7 +79,7 @@ export default function DonationsPage() {
                       letterSpacing: '0.14em',
                     }}
                   >
-                    VIEW DETAILS
+                    <T>VIEW DETAILS</T>
                   </button>
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
@@ -84,7 +90,7 @@ export default function DonationsPage() {
                       letterSpacing: '0.14em',
                     }}
                   >
-                    REQUEST PICKUP
+                    <T>REQUEST PICKUP</T>
                   </button>
                 </div>
               </Card>
@@ -94,13 +100,13 @@ export default function DonationsPage() {
 
       {tab === 'history' && (
         <Card className="p-5 border border-white/10 overflow-x-auto">
-          <CardTitle>Past Donations</CardTitle>
+          <CardTitle><T>Past Donations</T></CardTitle>
           <table className="w-full mt-4 text-sm">
             <thead>
               <tr className="text-text-secondary font-body text-xs">
                 {['Date', 'NGO', 'Food Type', 'Quantity', 'Status'].map((h) => (
                   <th key={h} className="text-left py-2 pr-3 whitespace-nowrap">
-                    {h}
+                    <T>{h}</T>
                   </th>
                 ))}
               </tr>
@@ -113,7 +119,7 @@ export default function DonationsPage() {
                   <td className="py-2 pr-3 whitespace-nowrap text-text-secondary">{row.type}</td>
                   <td className="py-2 pr-3 whitespace-nowrap text-text-secondary">{row.qty}</td>
                   <td className="py-2 pr-3 whitespace-nowrap">
-                    <Badge tone={row.status === 'Completed' ? 'good' : 'warn'}>{row.status}</Badge>
+                    <Badge tone={row.status === 'Completed' ? 'good' : 'warn'}><T>{row.status}</T></Badge>
                   </td>
                 </tr>
               ))}
@@ -125,8 +131,8 @@ export default function DonationsPage() {
       {tab === 'map' && (
         <div className="flex flex-col gap-4">
           <Card className="p-5 border border-white/10">
-            <CardTitle>Map</CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2">This embeds your existing NGO locator map module.</p>
+            <CardTitle><T>Map</T></CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2"><T>This embeds your existing NGO locator map module.</T></p>
           </Card>
           <NGOLocator />
         </div>
