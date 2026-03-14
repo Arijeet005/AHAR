@@ -233,6 +233,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
       {tab === 'reports' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10">
+<<<<<<< HEAD
             <CardTitle><T>Download Weekly Report (PDF)</T></CardTitle>
             <p className="font-body text-sm text-text-secondary mt-2"><T>Executive summary of waste and efficiency.</T></p>
             <button
@@ -244,10 +245,24 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
               }}
             >
               <T>DOWNLOAD</T>
+=======
+            <CardTitle>Download Weekly Report (PDF)</CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2">Executive summary of waste and efficiency.</p>
+	            <button
+	              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	              style={{
+	                background: 'var(--color-accent-orange)',
+	                color: '#fff',
+	                letterSpacing: '0.14em',
+	              }}
+	            >
+	              DOWNLOAD
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
             </button>
           </Card>
 
           <Card className="p-5 border border-white/10">
+<<<<<<< HEAD
             <CardTitle><T>Download Monthly Report (PDF)</T></CardTitle>
             <p className="font-body text-sm text-text-secondary mt-2"><T>Trends, anomalies, and actions.</T></p>
             <button
@@ -259,6 +274,19 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
               }}
             >
               <T>DOWNLOAD</T>
+=======
+            <CardTitle>Download Monthly Report (PDF)</CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2">Trends, anomalies, and actions.</p>
+	            <button
+	              className="mt-4 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	              style={{
+	                background: 'var(--color-accent-turquoise)',
+	                color: '#fff',
+	                letterSpacing: '0.14em',
+	              }}
+	            >
+	              DOWNLOAD
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
             </button>
           </Card>
 
@@ -291,6 +319,7 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 type="date"
                 aria-label="End date"
               />
+<<<<<<< HEAD
               <button
                 className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
                 style={{
@@ -300,6 +329,17 @@ export default function DashboardView({ tabFromQuery }: { tabFromQuery?: DashTab
                 }}
               >
                 <T>GENERATE</T>
+=======
+	              <button
+	                className="px-5 py-2.5 rounded-sm font-heading text-xs tracking-widest"
+	                style={{
+	                  background: 'var(--color-accent-red)',
+	                  color: '#fff',
+	                  letterSpacing: '0.14em',
+	                }}
+	              >
+	                GENERATE
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
               </button>
             </div>
           </Card>

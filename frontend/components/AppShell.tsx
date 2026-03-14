@@ -10,6 +10,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 type NavItem = {
   key:
+<<<<<<< HEAD
   | 'dashboard'
   | 'prediction'
   | 'inventoryHub'
@@ -17,6 +18,14 @@ type NavItem = {
   | 'payment'
   | 'guide'
   | 'pricing';
+=======
+    | 'dashboard'
+    | 'prediction'
+    | 'inventoryHub'
+    | 'donationLocator'
+    | 'guide'
+    | 'pricing';
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
   href: string;
 };
 
@@ -48,13 +57,6 @@ function Icon({ name }: { name: NavItem['key'] }) {
           <path d="M12 10.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="currentColor" opacity="0.9" />
         </svg>
       );
-    case 'payment':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M3 7h18v10H3V7Z" stroke="currentColor" strokeWidth="2" />
-          <path d="M3 10h18" stroke="currentColor" strokeWidth="2" />
-        </svg>
-      );
     case 'guide':
       return (
         <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -78,7 +80,6 @@ function pageTitleFromPath(pathname: string) {
   if (pathname.startsWith('/prediction')) return 'Prediction';
   if (pathname.startsWith('/inventory')) return 'Inventory Hub';
   if (pathname.startsWith('/donations')) return 'Donation Locator';
-  if (pathname.startsWith('/payment')) return 'Payment';
   if (pathname.startsWith('/guide')) return 'Guide';
   if (pathname.startsWith('/pricing')) return 'Pricing';
   return 'AHAR';
@@ -104,7 +105,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         { key: 'prediction', href: '/#prediction' },
         { key: 'inventoryHub', href: '/#inventory' },
         { key: 'donationLocator', href: '/#donations' },
-        { key: 'payment', href: '/#payment' },
         { key: 'guide', href: '/#guide' },
         { key: 'pricing', href: '/#pricing' },
       ];
@@ -115,7 +115,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       { key: 'prediction', href: '/prediction' },
       { key: 'inventoryHub', href: '/inventory' },
       { key: 'donationLocator', href: '/donations' },
-      { key: 'payment', href: '/payment' },
       { key: 'guide', href: '/guide' },
       { key: 'pricing', href: '/pricing' },
     ];
@@ -138,6 +137,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         { label: 'Expired', href: '/inventory?tab=expired' as const },
       ],
       donationLocator: [
+<<<<<<< HEAD
         { label: 'Nearest NGOs', href: '/donations?tab=nearest' as const },
         { label: 'History', href: '/donations?tab=history' as const },
         { label: 'Map', href: '/donations?tab=map' as const },
@@ -146,6 +146,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         { label: 'Billing', href: '/payment?tab=billing' as const },
         { label: 'Invoices', href: '/payment?tab=invoices' as const },
         { label: 'Payment Methods', href: '/payment?tab=methods' as const },
+=======
+        { label: 'Map', href: '/donations?tab=map' },
+        { label: 'Nearest NGOs', href: '/donations?tab=nearest' },
+        { label: 'History', href: '/donations?tab=history' },
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
       ],
       guide: [
         { label: 'Getting Started', href: '/guide?tab=start' as const },
@@ -153,7 +158,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         { label: 'Talk to Us', href: '/guide?tab=talk' as const },
         { label: 'Free Demo', href: '/guide?tab=demo' as const },
       ],
+<<<<<<< HEAD
       pricing: [{ label: 'Plans', href: '/pricing' as const }],
+=======
+      pricing: [
+        { label: 'Plans', href: '/pricing' },
+        { label: 'Billing', href: '/pricing?tab=billing' },
+        { label: 'Invoices', href: '/pricing?tab=invoices' },
+        { label: 'Payment Methods', href: '/pricing?tab=methods' },
+      ],
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
     } satisfies Record<NavItem['key'], { label: string; href: string }[]>;
   }, []);
 
@@ -167,6 +181,55 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     window.addEventListener('hashchange', update);
     return () => window.removeEventListener('hashchange', update);
   }, [navMode]);
+
+  useEffect(() => {
+    if (navMode !== 'anchors') return;
+
+    const ids = nav
+      .map((i) => i.href.split('#')[1])
+      .filter((v): v is string => Boolean(v));
+
+    const targets = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (!targets.length) return;
+
+    let raf = 0;
+    const setActive = (id: string) => {
+      setActiveHash(id);
+      if (window.location.hash !== `#${id}`) {
+        history.replaceState(null, '', `/#${id}`);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting && e.target instanceof HTMLElement)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        const top = visible[0]?.target as HTMLElement | undefined;
+        const id = top?.id;
+        if (!id) return;
+
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => setActive(id));
+      },
+      {
+        root: null,
+        threshold: [0.15, 0.25, 0.35, 0.5, 0.65],
+        rootMargin: '-35% 0px -55% 0px',
+      }
+    );
+
+    targets.forEach((t) => observer.observe(t));
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
+  }, [navMode, nav]);
 
   const Sidebar = (
     <aside className="h-full flex flex-col bg-neutral-dim/70 glass-strong border-r" style={{ borderColor: 'var(--glass-border)' }}>
@@ -260,15 +323,37 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      {/* Subtle background layer */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-60"
-        style={{
-          background:
-            'radial-gradient(ellipse at 15% 10%, rgba(226,55,68,0.08), transparent 55%), radial-gradient(ellipse at 85% 20%, rgba(252,128,25,0.08), transparent 55%), radial-gradient(ellipse at 50% 70%, rgba(48,213,200,0.08), transparent 60%)',
-        }}
-      />
-      <div className="fixed inset-0 grid-dots pointer-events-none opacity-25" />
+      {theme === 'light' ? (
+        <>
+          <div
+            className="fixed inset-0 pointer-events-none"
+            style={{
+              backgroundColor: 'var(--bg)',
+              backgroundImage: 'var(--app-bg-texture)',
+              backgroundRepeat: 'repeat',
+            }}
+          />
+          <div
+            className="fixed inset-0 pointer-events-none opacity-70"
+            style={{
+              background:
+                'radial-gradient(ellipse at 15% 10%, var(--primary-soft), transparent 55%), radial-gradient(ellipse at 85% 20%, var(--accent-soft), transparent 55%), radial-gradient(ellipse at 50% 70%, var(--info-soft), transparent 60%)',
+            }}
+          />
+        </>
+      ) : (
+        <>
+          {/* Subtle background layer */}
+          <div
+            className="fixed inset-0 pointer-events-none opacity-60"
+            style={{
+              background:
+                'radial-gradient(ellipse at 15% 10%, rgba(226,55,68,0.08), transparent 55%), radial-gradient(ellipse at 85% 20%, rgba(252,128,25,0.08), transparent 55%), radial-gradient(ellipse at 50% 70%, rgba(48,213,200,0.08), transparent 60%)',
+            }}
+          />
+          <div className="fixed inset-0 grid-dots pointer-events-none opacity-25" />
+        </>
+      )}
 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-[280px_1fr]">
         {/* Desktop sidebar */}
@@ -321,6 +406,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 >
                   <T>{t('login')}</T>
                 </Link>
+<<<<<<< HEAD
                 <Link
                   href="/register"
                   className="hidden sm:inline-flex px-3 py-2 rounded-sm font-heading text-xs tracking-widest"
@@ -331,6 +417,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   }}
                 >
                   <T>{t('register')}</T>
+=======
+	                <Link
+	                  href="/register"
+	                  className="hidden sm:inline-flex px-3 py-2 rounded-sm font-heading text-xs tracking-widest"
+	                  style={{
+	                    background: 'var(--color-accent-orange)',
+	                    color: '#fff',
+	                    letterSpacing: '0.14em',
+	                  }}
+	                >
+	                  {t('register')}
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
                 </Link>
               </div>
             </div>

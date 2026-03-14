@@ -122,6 +122,7 @@ export default function PredictionView() {
           </div>
         </div>
 
+<<<<<<< HEAD
         <button
           className="mt-5 w-full md:w-auto px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
           onClick={run}
@@ -132,6 +133,18 @@ export default function PredictionView() {
           }}
         >
           <T>RUN PREDICTION</T>
+=======
+	      <button
+	        className="mt-5 w-full md:w-auto px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
+	        onClick={run}
+	        style={{
+	          background: 'var(--color-accent-orange)',
+	          color: '#fff',
+	          letterSpacing: '0.14em',
+	        }}
+	      >
+	        RUN PREDICTION
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
         </button>
       </Card>
 

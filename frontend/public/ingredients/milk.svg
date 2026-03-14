@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Milk">
+  <rect x="16" y="16" width="224" height="224" rx="28" fill="#FFF8F3"/>
+  <path d="M104 56h48l10 26v118c0 14-10 24-24 24h-20c-14 0-24-10-24-24V82l10-26Z" fill="#ffffff" stroke="#F0E6DC" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M106 96h44" stroke="#FF6B35" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+  <path d="M112 62h32" stroke="#F0E6DC" stroke-width="10" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Potatoes">
+  <rect x="16" y="16" width="224" height="224" rx="28" fill="#FFF8F3"/>
+  <path d="M98 86c-26 14-40 62-22 98 18 36 64 42 92 20 30-24 34-72 12-104-22-32-52-30-82-14Z" fill="#D4A373"/>
+  <g fill="#6F4E37" opacity="0.35">
+    <circle cx="106" cy="136" r="6"/>
+    <circle cx="142" cy="120" r="6"/>
+    <circle cx="154" cy="158" r="6"/>
+    <circle cx="120" cy="172" r="6"/>
+  </g>
+  <path d="M140 78c8 8 16 12 26 14" fill="none" stroke="#2D6A4F" stroke-width="10" stroke-linecap="round"/>
+</svg>

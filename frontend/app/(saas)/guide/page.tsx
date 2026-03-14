@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
@@ -9,7 +9,7 @@ import { useTranslate, T } from '@/hooks/useTranslate';
 
 type GuideTab = 'start' | 'features' | 'talk' | 'demo';
 
-export default function GuidePage() {
+function GuidePageContent() {
   const [tab, setTab] = useState<GuideTab>('start');
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
@@ -94,6 +94,7 @@ export default function GuidePage() {
             <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder={phSubject} />
             <textarea className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary min-h-28 md:col-span-2" placeholder={phMessage} />
           </div>
+<<<<<<< HEAD
           <button
             className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
             style={{
@@ -103,6 +104,17 @@ export default function GuidePage() {
             }}
           >
             <T>SUBMIT</T>
+=======
+	          <button
+	            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-orange)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            SUBMIT
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
           </button>
         </Card>
       )}
@@ -121,6 +133,7 @@ export default function GuidePage() {
               <option value="On-site demo">{tOnsiteDemo}</option>
             </select>
           </div>
+<<<<<<< HEAD
           <button
             className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
             style={{
@@ -130,9 +143,28 @@ export default function GuidePage() {
             }}
           >
             <T>REQUEST DEMO</T>
+=======
+	          <button
+	            className="mt-4 px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-turquoise)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            REQUEST DEMO
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
           </button>
         </Card>
       )}
     </div>
+  );
+}
+
+export default function GuidePage() {
+  return (
+    <Suspense fallback={null}>
+      <GuidePageContent />
+    </Suspense>
   );
 }

@@ -5,10 +5,10 @@ AHAR frontend (Next.js App Router).
 - `/dashboard`: Analytics dashboard (tabs: Key Analytics, Time Range Analytics, Reports)
 - `/prediction`: AI demand prediction form + result card
 - `/inventory`: Inventory Hub (tabs: All, Expiry Soon, Add Item, Expired)
-- `/donations`: Donation Locator (tabs: Nearest NGOs, History, Map)
-- `/payment`: Billing/Invoices/Payment Methods
+- `/donations`: Donation Locator (tabs: Map, Nearest NGOs, History)
 - `/guide`: Getting Started, Features, Talk to Us, Free Demo
-- `/pricing`: Pricing plans
+- `/pricing`: Pricing plans + Billing/Invoices/Payment Methods
+- `/payment`: Redirects to `/pricing` (back-compat)
 - `/login`, `/register`: Placeholder auth screens
 
 ## Getting Started

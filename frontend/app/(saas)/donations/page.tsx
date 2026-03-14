@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
@@ -10,8 +10,8 @@ import { useTranslate, T } from '@/hooks/useTranslate';
 
 type DonTab = 'nearest' | 'history' | 'map';
 
-export default function DonationsPage() {
-  const [tab, setTab] = useState<DonTab>('nearest');
+function DonationsPageContent() {
+  const [tab, setTab] = useState<DonTab>('map');
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
 
@@ -27,9 +27,15 @@ export default function DonationsPage() {
 
   const tabs = useMemo(
     () => [
+<<<<<<< HEAD
       { key: 'nearest' as const, label: tNearestNGOs },
       { key: 'history' as const, label: tHistory },
       { key: 'map' as const, label: tMap },
+=======
+      { key: 'map' as const, label: 'Map' },
+      { key: 'nearest' as const, label: 'Nearest NGOs' },
+      { key: 'history' as const, label: 'History' },
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
     ],
     [tNearestNGOs, tHistory, tMap]
   );
@@ -71,6 +77,7 @@ export default function DonationsPage() {
                 </div>
                 <p className="font-body text-xs text-text-secondary mt-4"><T>Contact:</T> {ngo.phone}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
+<<<<<<< HEAD
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
                     style={{
@@ -81,6 +88,18 @@ export default function DonationsPage() {
                   >
                     <T>VIEW DETAILS</T>
                   </button>
+=======
+	                  <button
+	                    className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
+	                    style={{
+	                      background: 'var(--color-accent-turquoise)',
+	                      color: '#fff',
+	                      letterSpacing: '0.14em',
+	                    }}
+	                  >
+	                    VIEW DETAILS
+	                  </button>
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
                     style={{
@@ -138,5 +157,13 @@ export default function DonationsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DonationsPage() {
+  return (
+    <Suspense fallback={null}>
+      <DonationsPageContent />
+    </Suspense>
   );
 }

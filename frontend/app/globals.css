@@ -1,6 +1,61 @@
 @import "tailwindcss";
 
 @theme {
+  /* -----------------------------------------------------------------------
+     App-level design tokens (defaults align with the current dark theme).
+     Light theme overrides live in :root[data-theme='light'] below.
+  ----------------------------------------------------------------------- */
+  --primary: var(--color-accent-orange);
+  --primary-hover: var(--color-accent-orange);
+  --primary-soft: rgba(252, 128, 25, 0.12);
+
+  --accent: var(--color-accent-orange);
+  --accent-soft: rgba(252, 128, 25, 0.12);
+
+  --secondary: var(--color-accent-turquoise);
+  --teal: var(--color-accent-turquoise);
+
+  --bg: var(--color-base-dark);
+  --surface: var(--color-neutral-dim);
+  --surface-muted: var(--color-neutral-carbon);
+  --surface-elevated: var(--color-neutral-dim);
+
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  --text: var(--color-text-primary);
+  --text-muted: var(--color-text-secondary);
+  --text-subtle: var(--color-neutral-muted);
+
+  --success: #52B788;
+  --success-soft: rgba(82, 183, 136, 0.12);
+  --warning: var(--accent);
+  --warning-soft: rgba(252, 128, 25, 0.12);
+  --danger: var(--color-accent-red);
+  --danger-soft: rgba(226, 55, 68, 0.12);
+  --info: var(--color-accent-turquoise);
+  --info-soft: rgba(48, 213, 200, 0.12);
+
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(252, 128, 25, 0.15);
+  --shadow-lg: 0 8px 24px rgba(252, 128, 25, 0.25);
+  --shadow-primary: 0 4px 12px rgba(252, 128, 25, 0.3);
+  --shadow-accent: 0 4px 12px rgba(252, 128, 25, 0.3);
+
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 9999px;
+
+  --t-fast: 150ms ease;
+  --t-base: 220ms ease;
+
+  /* Background texture is theme-driven (disabled in dark by default). */
+  --app-bg-texture: none;
+
   --color-base-dark: #0b0b0b;
   --color-accent-red: #E23744;
   --color-accent-orange: #FC8019;
@@ -40,8 +95,10 @@
   }
 
   body {
-    background-color: var(--color-base-dark);
-    color: var(--color-text-primary);
+    background-color: var(--bg);
+    background-image: var(--app-bg-texture);
+    background-repeat: repeat;
+    color: var(--text);
     font-family: var(--font-body);
     line-height: 1.6;
   }
@@ -94,24 +151,82 @@
 
 /* Theme overrides (Tailwind v4 tokens read these CSS variables). */
 :root[data-theme='light'] {
-  --color-base-dark: #f6f6f7;
-  --color-neutral-dim: #ffffff;
-  --color-neutral-carbon: #d8d8dc;
-  --color-neutral-muted: #6a6a6a;
+  /* ----------------------
+     Brand Colors (Food-themed Light Mode)
+  ---------------------- */
+  --primary: #FF6B35;
+  --primary-hover: #E76F51;
+  --primary-soft: rgba(255, 107, 53, 0.12);
 
-  --color-text-primary: #121212;
-  --color-text-secondary: #2d2d2d;
+  --accent: #FFB703;
+  --accent-soft: rgba(255, 183, 3, 0.12);
 
-  /* Brand palette (Zomato + Swiggy). */
-  --color-accent-red: #CB202D;
-  --color-accent-orange: #D4902A;
-  --color-accent-turquoise: #2FBDB2;
+  --secondary: #2D6A4F;
+  --teal: #457B9D;
+
+  /* ----------------------
+     Surfaces & Context
+  ---------------------- */
+  --bg: #F4E9DC;
+  --surface: #ffffff;
+  --surface-muted: #FFF8F3;
+  --surface-elevated: #ffffff;
+
+  --border: #F0E6DC;
+  --border-subtle: rgba(27, 38, 49, 0.06);
+
+  /* ----------------------
+     Typography
+  ---------------------- */
+  --text: #1B2631;
+  --text-muted: #6F4E37;
+  --text-subtle: #9ca3af;
+
+  /* ----------------------
+     Status
+  ---------------------- */
+  --success: #52B788;
+  --success-soft: rgba(82, 183, 136, 0.12);
+  --warning: #FFB703;
+  --warning-soft: rgba(255, 183, 3, 0.12);
+  --danger: #E76F51;
+  --danger-soft: rgba(231, 111, 81, 0.12);
+  --info: #457B9D;
+  --info-soft: rgba(69, 123, 157, 0.12);
+
+  /* ----------------------
+     Fonts (Inter + Syne)
+  ---------------------- */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-heading: 'Syne', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+
+  /* Background texture (subtle food-themed dot/grid). */
+  --app-bg-texture: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%23FF6B35' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+
+  /* ---------------------------------------------------------------------
+     Back-compat mapping: existing UI uses these Tailwind tokens heavily.
+  --------------------------------------------------------------------- */
+  --color-base-dark: var(--bg);
+  --color-neutral-dim: var(--surface);
+  --color-neutral-carbon: var(--surface-muted);
+  --color-neutral-muted: var(--text-subtle);
+
+  --color-text-primary: var(--text);
+  --color-text-secondary: var(--text-muted);
+
+  --color-accent-orange: var(--primary);
+  --color-accent-red: var(--danger);
+  --color-accent-turquoise: var(--secondary);
 
   /* Light glass needs to be readable on light surfaces. */
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-strong-bg: rgba(255, 255, 255, 0.88);
-  --glass-strong-border: rgba(0, 0, 0, 0.10);
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(27, 38, 49, 0.10);
+  --glass-strong-bg: rgba(255, 255, 255, 0.92);
+  --glass-strong-border: rgba(27, 38, 49, 0.12);
+}
+
+:root[data-theme='light'] .leaflet-tile {
+  filter: none !important;
 }
 
 @layer utilities {

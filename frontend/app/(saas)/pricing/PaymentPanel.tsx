@@ -1,23 +1,16 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-<<<<<<< HEAD
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardTitle } from '@/components/ui/Card';
 import { SubTabs } from '@/components/ui/SubTabs';
-import { useTranslate, T } from '@/hooks/useTranslate';
 
 type PayTab = 'billing' | 'invoices' | 'methods';
 
-export default function PaymentPage() {
+export default function PaymentPanel() {
   const [tab, setTab] = useState<PayTab>('billing');
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
-
-  // Tab label translations
-  const tBilling = useTranslate('Billing');
-  const tInvoices = useTranslate('Invoices');
-  const tPaymentMethods = useTranslate('Payment Methods');
 
   useEffect(() => {
     if (tabParam !== 'billing' && tabParam !== 'invoices' && tabParam !== 'methods') return;
@@ -26,11 +19,11 @@ export default function PaymentPage() {
 
   const tabs = useMemo(
     () => [
-      { key: 'billing' as const, label: tBilling },
-      { key: 'invoices' as const, label: tInvoices },
-      { key: 'methods' as const, label: tPaymentMethods },
+      { key: 'billing' as const, label: 'Billing' },
+      { key: 'invoices' as const, label: 'Invoices' },
+      { key: 'methods' as const, label: 'Payment Methods' },
     ],
-    [tBilling, tInvoices, tPaymentMethods]
+    []
   );
 
   return (
@@ -40,19 +33,19 @@ export default function PaymentPage() {
       {tab === 'billing' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10 xl:col-span-2">
-            <CardTitle><T>Current Plan</T></CardTitle>
+            <CardTitle>Current Plan</CardTitle>
             <p className="font-heading font-black text-3xl mt-3 text-text-primary">Pro</p>
-            <p className="font-body text-sm text-text-secondary mt-2"><T>Renewal:</T> 2026-04-01</p>
+            <p className="font-body text-sm text-text-secondary mt-2">Renewal: 2026-04-01</p>
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <button
                 className="px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
                 style={{
-                  background: 'linear-gradient(135deg, var(--color-accent-red), var(--color-accent-orange))',
-                  color: 'var(--color-text-primary)',
+                  background: 'var(--color-accent-red)',
+                  color: '#fff',
                   letterSpacing: '0.14em',
                 }}
               >
-                <T>UPGRADE</T>
+                UPGRADE
               </button>
               <button
                 className="px-6 py-3 rounded-sm font-heading text-xs tracking-widest"
@@ -63,19 +56,19 @@ export default function PaymentPage() {
                   letterSpacing: '0.14em',
                 }}
               >
-                <T>MANAGE BILLING</T>
+                MANAGE BILLING
               </button>
             </div>
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle><T>Pricing Summary</T></CardTitle>
+            <CardTitle>Pricing Summary</CardTitle>
             <div className="mt-4 glass p-4 rounded-sm border border-white/10">
-              <p className="font-body text-sm text-text-secondary"><T>Monthly</T></p>
+              <p className="font-body text-sm text-text-secondary">Monthly</p>
               <p className="font-heading font-black text-2xl text-text-primary mt-1">₹ 4,999</p>
             </div>
             <div className="mt-3 glass p-4 rounded-sm border border-white/10">
-              <p className="font-body text-sm text-text-secondary"><T>Yearly</T></p>
+              <p className="font-body text-sm text-text-secondary">Yearly</p>
               <p className="font-heading font-black text-2xl text-text-primary mt-1">₹ 49,999</p>
             </div>
           </Card>
@@ -84,12 +77,12 @@ export default function PaymentPage() {
 
       {tab === 'invoices' && (
         <Card className="p-5 border border-white/10">
-          <CardTitle><T>Invoices</T></CardTitle>
+          <CardTitle>Invoices</CardTitle>
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {['2026-03', '2026-02', '2026-01'].map((m) => (
               <div key={m} className="glass p-4 rounded-sm border border-white/10">
                 <p className="font-heading font-bold text-text-primary">{m}</p>
-                <p className="font-body text-sm text-text-secondary mt-1"><T>AHAR Pro Subscription</T></p>
+                <p className="font-body text-sm text-text-secondary mt-1">AHAR Pro Subscription</p>
                 <button
                   className="mt-3 w-full py-2.5 rounded-sm font-heading text-xs tracking-widest"
                   style={{
@@ -99,7 +92,7 @@ export default function PaymentPage() {
                     letterSpacing: '0.14em',
                   }}
                 >
-                  <T>DOWNLOAD PDF</T>
+                  DOWNLOAD PDF
                 </button>
               </div>
             ))}
@@ -110,21 +103,18 @@ export default function PaymentPage() {
       {tab === 'methods' && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <Card className="p-5 border border-white/10 xl:col-span-2">
-            <CardTitle><T>Stored Payment Methods</T></CardTitle>
+            <CardTitle>Stored Payment Methods</CardTitle>
             <div className="mt-4 flex flex-col gap-3">
               {[
                 { brand: 'Visa', last4: '4242', exp: '08/28' },
                 { brand: 'Mastercard', last4: '4444', exp: '11/27' },
               ].map((c) => (
-                <div
-                  key={c.last4}
-                  className="glass p-4 rounded-sm border border-white/10 flex items-center justify-between gap-3"
-                >
+                <div key={c.last4} className="glass p-4 rounded-sm border border-white/10 flex items-center justify-between gap-3">
                   <div>
                     <p className="font-heading font-bold text-text-primary">
                       {c.brand} •••• {c.last4}
                     </p>
-                    <p className="font-body text-sm text-text-secondary mt-1"><T>Expires</T> {c.exp}</p>
+                    <p className="font-body text-sm text-text-secondary mt-1">Expires {c.exp}</p>
                   </div>
                   <button
                     className="px-4 py-2 rounded-sm font-heading text-xs tracking-widest"
@@ -135,7 +125,7 @@ export default function PaymentPage() {
                       letterSpacing: '0.14em',
                     }}
                   >
-                    <T>REMOVE</T>
+                    REMOVE
                   </button>
                 </div>
               ))}
@@ -143,33 +133,21 @@ export default function PaymentPage() {
           </Card>
 
           <Card className="p-5 border border-white/10">
-            <CardTitle><T>Add New Method</T></CardTitle>
-            <p className="font-body text-sm text-text-secondary mt-2"><T>Connect a new card (placeholder UI).</T></p>
+            <CardTitle>Add New Method</CardTitle>
+            <p className="font-body text-sm text-text-secondary mt-2">Connect a new card (placeholder UI).</p>
             <button
               className="mt-4 w-full py-3 rounded-sm font-heading text-xs tracking-widest"
               style={{
-                background: 'linear-gradient(135deg, var(--color-accent-turquoise), var(--color-accent-orange))',
-                color: 'var(--color-text-primary)',
+                background: 'var(--color-accent-turquoise)',
+                color: '#fff',
                 letterSpacing: '0.14em',
               }}
             >
-              <T>ADD CARD</T>
+              ADD CARD
             </button>
           </Card>
         </div>
       )}
     </div>
   );
-=======
-export default function PaymentPage({
-  searchParams,
-}: {
-  searchParams?: {
-    tab?: string;
-  };
-}) {
-  const tab = searchParams?.tab;
-  const next = tab ? `/pricing?tab=${encodeURIComponent(tab)}` : '/pricing?tab=billing';
-  redirect(next);
->>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
 }

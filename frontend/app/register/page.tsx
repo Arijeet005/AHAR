@@ -15,6 +15,7 @@ export default function RegisterPage() {
         <CardTitle><T>Register</T></CardTitle>
         <p className="font-body text-sm text-text-secondary mt-2"><T>Auth wiring placeholder.</T></p>
         <div className="mt-5 flex flex-col gap-3">
+<<<<<<< HEAD
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder={phName} />
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder={phEmail} />
           <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder={phPassword} type="password" />
@@ -27,6 +28,20 @@ export default function RegisterPage() {
             }}
           >
             <T>REGISTER</T>
+=======
+          <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Name" />
+          <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Email" />
+          <input className="glass border border-white/10 rounded-sm px-3 py-2.5 font-body text-sm text-text-primary" placeholder="Password" type="password" />
+	          <button
+	            className="mt-2 w-full py-3 rounded-sm font-heading text-xs tracking-widest"
+	            style={{
+	              background: 'var(--color-accent-turquoise)',
+	              color: '#fff',
+	              letterSpacing: '0.14em',
+	            }}
+	          >
+	            REGISTER
+>>>>>>> 830dca374aabc8c4aa8648db87b68eb1e0543841
           </button>
           <p className="font-body text-sm text-text-secondary">
             <T>Already have an account?</T>{' '}
@@ -39,4 +54,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
